@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe, User, LogOut, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserRole } from '@/hooks/useUserRole';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,12 +13,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from 'sonner';
+import sourceLogo from '@/assets/source-logo.svg';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const { language, setLanguage, isRTL } = useLanguage();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -30,6 +35,14 @@ const Navbar = () => {
 
   const isActive = (href: string) => location.pathname === href;
 
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Signed out successfully');
+    navigate('/auth', { replace: true });
+  };
+
+  const portalPath = isAdmin ? '/admin/dashboard' : '/client-portal/dashboard';
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
       <div className="glass-card mx-4 mt-4 rounded-2xl">
@@ -37,12 +50,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-gold flex items-center justify-center">
-                <span className="text-background font-display font-bold text-xl">E</span>
-              </div>
-              <span className="font-display text-xl font-semibold text-foreground hidden sm:block">
-                Estates
-              </span>
+              <img src={sourceLogo} alt="Source" className="h-10 w-auto" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -98,12 +106,11 @@ const Navbar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="glass-card border-border/50">
                     <DropdownMenuItem asChild>
-                      <Link to="/portal">{t('nav.myPortal')}</Link>
+                      <Link to={portalPath}>
+                        {isAdmin ? 'Admin Dashboard' : 'My Portal'}
+                      </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard">{t('nav.dashboard')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={signOut} className="text-destructive">
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
                       <LogOut className="w-4 h-4 mr-2" />
                       {t('nav.logout')}
                     </DropdownMenuItem>
@@ -112,13 +119,8 @@ const Navbar = () => {
               ) : (
                 <div className="hidden sm:flex items-center gap-3">
                   <Link to="/auth">
-                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-                      {t('nav.login')}
-                    </Button>
-                  </Link>
-                  <Link to="/auth?mode=register">
                     <Button className="btn-gold">
-                      {t('nav.register')}
+                      {t('nav.login')}
                     </Button>
                   </Link>
                 </div>
@@ -162,16 +164,27 @@ const Navbar = () => {
                   {link.label}
                 </Link>
               ))}
-              {!user && (
+              {user ? (
                 <div className="pt-4 border-t border-border/50 space-y-3">
-                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to={portalPath} onClick={() => setIsMobileMenuOpen(false)}>
                     <Button variant="outline" className="w-full border-border/50">
-                      {t('nav.login')}
+                      {isAdmin ? 'Admin Dashboard' : 'My Portal'}
                     </Button>
                   </Link>
-                  <Link to="/auth?mode=register" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button 
+                    onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }} 
+                    variant="ghost"
+                    className="w-full text-destructive"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <div className="pt-4 border-t border-border/50 space-y-3">
+                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
                     <Button className="w-full btn-gold">
-                      {t('nav.register')}
+                      {t('nav.login')}
                     </Button>
                   </Link>
                 </div>
