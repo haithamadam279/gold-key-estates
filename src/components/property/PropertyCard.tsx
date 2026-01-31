@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Bed, Bath, Maximize, Heart, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import CompareToggle from '@/components/compare/CompareToggle';
 
 interface PropertyCardProps {
   id: string;
