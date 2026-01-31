@@ -23,6 +23,7 @@ import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Compare from "./pages/Compare";
 
 // Client Portal Pages (lazy loaded)
 const ClientDashboard = lazy(() => import("./pages/client/Dashboard"));
