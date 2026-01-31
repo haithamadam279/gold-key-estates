@@ -1,11 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { ArrowRight, Building2, Users, Award, TrendingUp } from 'lucide-react';
+import { ArrowRight, Building2, Users, Award, TrendingUp, Send, Loader2 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PropertyCard from '@/components/property/PropertyCard';
 import SearchFilters from '@/components/property/SearchFilters';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import sourceLogo from '@/assets/source-logo.svg';
 
 // Sample featured properties
 const featuredProperties = [
@@ -69,15 +77,72 @@ const stats = [
   { icon: TrendingUp, value: '98%', label: 'Satisfaction Rate' },
 ];
 
+const leadSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100),
+  email: z.string().trim().email('Invalid email address').max(255),
+  phone: z.string().optional(),
+  message: z.string().trim().min(1, 'Message is required').max(1000),
+});
+
 const Index = () => {
   const { t } = useTranslation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [leadForm, setLeadForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const result = leadSchema.safeParse(leadForm);
+    if (!result.success) {
+      toast.error(result.error.errors[0].message);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.from('leads').insert({
+        name: leadForm.name,
+        email: leadForm.email,
+        phone: leadForm.phone || null,
+        message: leadForm.message,
+      });
+
+      if (error) throw error;
+
+      toast.success('Thank you! We will contact you soon.');
+      setLeadForm({ name: '', email: '', phone: '', message: '' });
+    } catch (err) {
+      console.error('Error submitting lead:', err);
+      toast.error('Failed to submit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center watermark-bg">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-hero" />
+        
+        {/* Watermark Logo */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.img
+            src={sourceLogo}
+            alt=""
+            className="w-[600px] h-[600px] opacity-[0.02] blur-[1px]"
+            animate={{ 
+              scale: [1, 1.03, 1],
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
         
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -223,42 +288,123 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Lead Form Section */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-card" />
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-gold blur-3xl" />
+          <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-gold blur-3xl" />
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-6">
-                Ready to Find Your{' '}
-                <span className="text-gold-gradient">Dream Home?</span>
-              </h2>
-              <p className="text-muted-foreground text-lg mb-10">
-                Our team of experts is ready to help you discover the perfect property 
-                that matches your lifestyle and investment goals.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/contact">
-                  <Button className="btn-gold text-lg px-8 py-6">
-                    Schedule Consultation
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link to="/properties">
-                  <Button variant="outline" className="text-lg px-8 py-6 border-border/50 hover:border-primary/50">
-                    Browse Properties
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-6">
+                  Ready to Find Your{' '}
+                  <span className="text-gold-gradient">Dream Home?</span>
+                </h2>
+                <p className="text-muted-foreground text-lg mb-8">
+                  Our team of experts is ready to help you discover the perfect property 
+                  that matches your lifestyle and investment goals. Fill out the form 
+                  and we'll get back to you within 24 hours.
+                </p>
+                <ul className="space-y-4 text-muted-foreground">
+                  <li className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    Personalized property recommendations
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    Expert market analysis
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                    Flexible payment plans
+                  </li>
+                </ul>
+              </motion.div>
+
+              {/* Lead Form */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="glass-card p-8 border border-border/30">
+                  <h3 className="font-display text-xl font-semibold text-foreground mb-6">
+                    Get in Touch
+                  </h3>
+                  <form onSubmit={handleLeadSubmit} className="space-y-4">
+                    <div>
+                      <Label htmlFor="lead-name">Full Name *</Label>
+                      <Input
+                        id="lead-name"
+                        value={leadForm.name}
+                        onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                        placeholder="Your full name"
+                        className="input-luxury mt-1"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lead-email">Email Address *</Label>
+                      <Input
+                        id="lead-email"
+                        type="email"
+                        value={leadForm.email}
+                        onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                        placeholder="your@email.com"
+                        className="input-luxury mt-1"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lead-phone">Phone Number</Label>
+                      <Input
+                        id="lead-phone"
+                        value={leadForm.phone}
+                        onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                        placeholder="+20 xxx xxx xxxx"
+                        className="input-luxury mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lead-message">Message *</Label>
+                      <Textarea
+                        id="lead-message"
+                        value={leadForm.message}
+                        onChange={(e) => setLeadForm({ ...leadForm, message: e.target.value })}
+                        placeholder="Tell us about your property requirements..."
+                        className="input-luxury mt-1 min-h-24"
+                        required
+                      />
+                    </div>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full btn-gold h-12 gap-2"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-5 h-5" />
+                          Send Message
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>

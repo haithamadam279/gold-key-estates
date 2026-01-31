@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import sourceLogo from '@/assets/source-logo.svg';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -50,12 +51,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-gold flex items-center justify-center">
-                <span className="text-background font-display font-bold text-2xl">E</span>
-              </div>
-              <span className="font-display text-2xl font-semibold text-foreground">
-                Estates
-              </span>
+              <img src={sourceLogo} alt="Source" className="h-12 w-auto" />
             </Link>
             <p className="text-muted-foreground leading-relaxed">
               Discover exceptional properties in the most prestigious locations. 
@@ -110,7 +106,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>info@estates.com</span>
+                <span>info@source-properties.com</span>
               </li>
             </ul>
           </div>
@@ -139,7 +135,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {currentYear} Estates. {t('footer.rights')}.
+            © {currentYear} Source. {t('footer.rights')}.
           </p>
           <div className="flex gap-6">
             {legalLinks.map((link) => (
