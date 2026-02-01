@@ -30,10 +30,12 @@ const ClientDashboard = lazy(() => import("./pages/client/Dashboard"));
 const MyAssets = lazy(() => import("./pages/client/MyAssets"));
 const Documents = lazy(() => import("./pages/client/Documents"));
 const ResaleRequest = lazy(() => import("./pages/client/ResaleRequest"));
+const EditProfile = lazy(() => import("./pages/client/EditProfile"));
 
 // Admin Dashboard Pages (lazy loaded)
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
+const EditUser = lazy(() => import("./pages/admin/EditUser"));
 const ManageProperties = lazy(() => import("./pages/admin/ManageProperties"));
 const ManageDocuments = lazy(() => import("./pages/admin/ManageDocuments"));
 const ManageResaleRequests = lazy(() => import("./pages/admin/ManageResaleRequests"));
@@ -41,6 +43,7 @@ const AdminSettings = lazy(() => import("./pages/admin/Settings"));
 const ManageInventory = lazy(() => import("./pages/admin/ManageInventory"));
 const ManageLeads = lazy(() => import("./pages/admin/ManageLeads"));
 const ManageCMS = lazy(() => import("./pages/admin/ManageCMS"));
+const GoogleSyncSettings = lazy(() => import("./pages/admin/GoogleSyncSettings"));
 
 // Agent Pages (lazy loaded)
 const AgentDashboard = lazy(() => import("./pages/agent/Dashboard"));
@@ -112,6 +115,16 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/client-portal/profile"
+          element={
+            <ProtectedRoute requiredRole="client">
+              <Suspense fallback={null}>
+                <EditProfile />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Agent Routes */}
         <Route
@@ -152,6 +165,16 @@ const AppContent = () => {
             <ProtectedRoute requiredRole={['admin', 'super_admin']}>
               <Suspense fallback={null}>
                 <ManageUsers />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users/:id/edit"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <EditUser />
               </Suspense>
             </ProtectedRoute>
           }

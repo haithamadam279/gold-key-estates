@@ -12,13 +12,19 @@ interface PropertyCardProps {
   location: string;
   price: number;
   salePrice?: number;
-  beds: number;
-  baths: number;
+  originalPrice?: number; // Alias for backwards compatibility
+  bedrooms?: number;
+  beds?: number;
+  bathrooms?: number;
+  baths?: number;
   area: number;
-  image: string;
-  status: 'available' | 'reserved' | 'sold';
+  imageUrl?: string;
+  image?: string;
+  status: 'available' | 'reserved' | 'sold' | 'under_construction' | 'delivered';
   tag?: 'hot' | 'new' | 'bestValue';
   constructionProgress?: number;
+  currency?: string;
+  featured?: boolean;
 }
 
 const PropertyCard = ({
@@ -27,14 +33,30 @@ const PropertyCard = ({
   location,
   price,
   salePrice,
+  originalPrice,
   beds,
+  bedrooms,
   baths,
+  bathrooms,
   area,
   image,
+  imageUrl,
   status,
   tag,
   constructionProgress,
+  currency = 'EGP',
+  featured,
 }: PropertyCardProps) => {
+  // Normalize props for backwards compatibility
+  const displayBeds = beds ?? bedrooms ?? 0;
+  const displayBaths = baths ?? bathrooms ?? 0;
+  const displayImage = image ?? imageUrl ?? '/placeholder.svg';
+  const displayOriginalPrice = originalPrice ?? salePrice;
+  
+  // Map status for display
+  const displayStatus = status === 'under_construction' || status === 'delivered' 
+    ? 'available' 
+    : status;
   const { t } = useTranslation();
 
   const formatPrice = (value: number) => {
@@ -46,14 +68,20 @@ const PropertyCard = ({
   };
 
   const getStatusBadge = () => {
-    const statusClasses = {
+    const statusClasses: Record<string, string> = {
       available: 'badge-available',
       reserved: 'badge-reserved',
       sold: 'badge-sold',
+      under_construction: 'bg-warning/20 text-warning border-warning/30',
+      delivered: 'bg-success/20 text-success border-success/30',
+    };
+    const statusLabels: Record<string, string> = {
+      under_construction: 'Under Construction',
+      delivered: 'Ready to Move',
     };
     return (
-      <Badge className={`${statusClasses[status]} text-xs`}>
-        {t(`property.status.${status}`)}
+      <Badge className={`${statusClasses[status] || statusClasses.available} text-xs`}>
+        {statusLabels[status] || t(`property.status.${displayStatus}`)}
       </Badge>
     );
   };
@@ -84,7 +112,7 @@ const PropertyCard = ({
         {/* Image */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
-            src={image}
+            src={displayImage}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
@@ -135,11 +163,11 @@ const PropertyCard = ({
           <div className="flex items-center gap-6 mb-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <Bed className="w-4 h-4 text-primary" />
-              <span>{beds} {t('property.beds')}</span>
+              <span>{displayBeds} {t('property.beds')}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Bath className="w-4 h-4 text-primary" />
-              <span>{baths} {t('property.baths')}</span>
+              <span>{displayBaths} {t('property.baths')}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Maximize className="w-4 h-4 text-primary" />
@@ -150,18 +178,18 @@ const PropertyCard = ({
           {/* Price */}
           <div className="flex items-end justify-between">
             <div>
-              {salePrice ? (
+              {displayOriginalPrice ? (
                 <>
                   <p className="text-muted-foreground line-through text-sm">
-                    {formatPrice(price)} {t('common.currency')}
+                    {formatPrice(displayOriginalPrice)} {currency}
                   </p>
                   <p className="text-gold font-semibold text-xl">
-                    {formatPrice(salePrice)} {t('common.currency')}
+                    {formatPrice(price)} {currency}
                   </p>
                 </>
               ) : (
                 <p className="text-gold font-semibold text-xl">
-                  {formatPrice(price)} {t('common.currency')}
+                  {formatPrice(price)} {currency}
                 </p>
               )}
             </div>
