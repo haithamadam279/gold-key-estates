@@ -30,6 +30,7 @@ const ClientDashboard = lazy(() => import("./pages/client/Dashboard"));
 const MyAssets = lazy(() => import("./pages/client/MyAssets"));
 const Documents = lazy(() => import("./pages/client/Documents"));
 const ResaleRequest = lazy(() => import("./pages/client/ResaleRequest"));
+const EditProfile = lazy(() => import("./pages/client/EditProfile"));
 
 // Admin Dashboard Pages (lazy loaded)
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
