@@ -34,6 +34,7 @@ const ResaleRequest = lazy(() => import("./pages/client/ResaleRequest"));
 // Admin Dashboard Pages (lazy loaded)
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
+const EditUser = lazy(() => import("./pages/admin/EditUser"));
 const ManageProperties = lazy(() => import("./pages/admin/ManageProperties"));
 const ManageDocuments = lazy(() => import("./pages/admin/ManageDocuments"));
 const ManageResaleRequests = lazy(() => import("./pages/admin/ManageResaleRequests"));
@@ -41,6 +42,7 @@ const AdminSettings = lazy(() => import("./pages/admin/Settings"));
 const ManageInventory = lazy(() => import("./pages/admin/ManageInventory"));
 const ManageLeads = lazy(() => import("./pages/admin/ManageLeads"));
 const ManageCMS = lazy(() => import("./pages/admin/ManageCMS"));
+const GoogleSyncSettings = lazy(() => import("./pages/admin/GoogleSyncSettings"));
 
 // Agent Pages (lazy loaded)
 const AgentDashboard = lazy(() => import("./pages/agent/Dashboard"));
