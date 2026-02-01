@@ -112,7 +112,7 @@ const PropertyCard = ({
         {/* Image */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
-            src={image}
+            src={displayImage}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
