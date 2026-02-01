@@ -4,7 +4,7 @@ import { Building2, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { useAuth } from '@/contexts/AuthContext';
+import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Property {

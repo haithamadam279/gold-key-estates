@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FileText, Download, Building2, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
+import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 

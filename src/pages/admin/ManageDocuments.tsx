@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { toast } from 'sonner';
 
 interface Document {
