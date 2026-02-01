@@ -1,19 +1,12 @@
 /**
  * API Auth Context
- * JWT-based authentication with external backend support
+ * Supabase-based authentication with role support
  */
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import {
-  User,
-  UserRole,
-  JWTPayload,
-  IS_MOCK_MODE,
-  tokenManager,
-  mockAuth,
-  decodeMockToken,
-} from '@/lib/api';
-import { post, get } from '@/lib/api/client';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { UserRole } from '@/lib/api/types';
 
 interface ApiAuthContextType {
   user: User | null;
