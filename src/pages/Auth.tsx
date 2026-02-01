@@ -212,12 +212,17 @@ const Auth = () => {
               </div>
               <button
                 type="button"
-                className="text-sm text-primary hover:text-primary-hover transition-colors"
-                onClick={() => toast.info('Please contact your administrator to reset your password.')}
+                className="text-sm text-primary hover:text-primary/80 transition-colors"
+                onClick={() => setShowForgotPassword(true)}
               >
                 Forgot password?
               </button>
             </div>
+
+            <ForgotPasswordModal
+              open={showForgotPassword}
+              onOpenChange={setShowForgotPassword}
+            />
 
             <Button
               type="submit"
