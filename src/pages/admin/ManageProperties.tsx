@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { toast } from 'sonner';
 
 interface Property {
@@ -61,7 +61,7 @@ interface UserOption {
 }
 
 const ManageProperties = () => {
-  const { user } = useAuth();
+  const { user } = useApiAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [users, setUsers] = useState<UserOption[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
