@@ -17,6 +17,7 @@ import "@/lib/i18n";
 // Public Pages
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Properties from "./pages/Properties";
 import PropertyDetails from "./pages/PropertyDetails";
 import Projects from "./pages/Projects";
