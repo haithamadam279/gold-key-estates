@@ -33,14 +33,30 @@ const PropertyCard = ({
   location,
   price,
   salePrice,
+  originalPrice,
   beds,
+  bedrooms,
   baths,
+  bathrooms,
   area,
   image,
+  imageUrl,
   status,
   tag,
   constructionProgress,
+  currency = 'EGP',
+  featured,
 }: PropertyCardProps) => {
+  // Normalize props for backwards compatibility
+  const displayBeds = beds ?? bedrooms ?? 0;
+  const displayBaths = baths ?? bathrooms ?? 0;
+  const displayImage = image ?? imageUrl ?? '/placeholder.svg';
+  const displayOriginalPrice = originalPrice ?? salePrice;
+  
+  // Map status for display
+  const displayStatus = status === 'under_construction' || status === 'delivered' 
+    ? 'available' 
+    : status;
   const { t } = useTranslation();
 
   const formatPrice = (value: number) => {
