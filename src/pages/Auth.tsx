@@ -24,6 +24,7 @@ const Auth = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const { signIn, user, isLoading: authLoading } = useApiAuth();
   const navigate = useNavigate();
 
