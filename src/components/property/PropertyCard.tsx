@@ -68,14 +68,20 @@ const PropertyCard = ({
   };
 
   const getStatusBadge = () => {
-    const statusClasses = {
+    const statusClasses: Record<string, string> = {
       available: 'badge-available',
       reserved: 'badge-reserved',
       sold: 'badge-sold',
+      under_construction: 'bg-warning/20 text-warning border-warning/30',
+      delivered: 'bg-success/20 text-success border-success/30',
+    };
+    const statusLabels: Record<string, string> = {
+      under_construction: 'Under Construction',
+      delivered: 'Ready to Move',
     };
     return (
-      <Badge className={`${statusClasses[status]} text-xs`}>
-        {t(`property.status.${status}`)}
+      <Badge className={`${statusClasses[status] || statusClasses.available} text-xs`}>
+        {statusLabels[status] || t(`property.status.${displayStatus}`)}
       </Badge>
     );
   };
