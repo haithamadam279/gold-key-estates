@@ -52,8 +52,8 @@ const LoadingScreen = ({ isLoading, minDuration = 800 }: LoadingScreenProps) => 
           aria-busy="true"
           aria-label="Loading"
         >
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#121218] to-[#0a0a0a]" />
+          {/* Background - Theme aware */}
+          <div className="absolute inset-0 bg-gradient-to-br from-background via-background-secondary to-background" />
           
           {/* Subtle gold ambient glow */}
           <motion.div

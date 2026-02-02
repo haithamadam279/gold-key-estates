@@ -29,6 +29,7 @@ import MegaMenu from './MegaMenu';
 import MobileDrawer from './MobileDrawer';
 import QuickSearch from './QuickSearch';
 import DynamicIcon from './DynamicIcon';
+import { ThemeToggle } from '@/components/theme';
 
 export const EnterpriseNavbar = () => {
   const { t } = useTranslation();
@@ -220,6 +221,9 @@ export const EnterpriseNavbar = () => {
                 <div className="hidden md:block">
                   <QuickSearch variant="header" />
                 </div>
+
+                {/* Theme Toggle */}
+                <ThemeToggle className="hidden sm:flex" />
 
                 {/* Language Switcher */}
                 <DropdownMenu>

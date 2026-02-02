@@ -11,6 +11,8 @@ import {
   LogOut,
   ArrowLeftRight,
   Phone,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NavigationItem, NavigationCTA } from '@/hooks/useNavigation';
@@ -18,6 +20,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useCompare } from '@/contexts/CompareContext';
+import { useThemeContext } from '@/components/theme';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import sourceLogo from '@/assets/source-logo.svg';
@@ -37,6 +40,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
   const { user, signOut, isAuthenticated } = useApiAuth();
   const { isAdmin } = useUserRole();
   const { ids: compareIds } = useCompare();
+  const { toggleTheme, isDark } = useThemeContext();
   const location = useLocation();
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -242,8 +246,23 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
 
             {/* Footer */}
             <div className="sticky bottom-0 p-4 border-t border-border/30 bg-background space-y-3">
-              {/* Language Switcher */}
+              {/* Theme & Language Row */}
               <div className="flex items-center gap-2">
+                {/* Theme Toggle */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleTheme}
+                  className="border-border/50"
+                  aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {isDark ? (
+                    <Sun className="w-4 h-4" />
+                  ) : (
+                    <Moon className="w-4 h-4" />
+                  )}
+                </Button>
+                
                 <Button
                   variant={language === 'en' ? 'default' : 'outline'}
                   size="sm"

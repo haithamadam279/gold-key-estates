@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ApiAuthProvider } from "@/contexts/ApiAuthContext";
 import { LoadingProvider, useLoading } from "@/contexts/LoadingContext";
 import { CompareProvider } from "@/contexts/CompareContext";
+import { ThemeProvider } from "@/components/theme";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import LoadingScreen from "@/components/loading/LoadingScreen";
 import RouteLoadingHandler from "@/components/loading/RouteLoadingHandler";
@@ -314,21 +315,23 @@ const AppContent = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <ApiAuthProvider>
-        <LoadingProvider>
-          <CompareProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AppContent />
-              </BrowserRouter>
-            </TooltipProvider>
-          </CompareProvider>
-        </LoadingProvider>
-      </ApiAuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <ApiAuthProvider>
+          <LoadingProvider>
+            <CompareProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <AppContent />
+                </BrowserRouter>
+              </TooltipProvider>
+            </CompareProvider>
+          </LoadingProvider>
+        </ApiAuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
