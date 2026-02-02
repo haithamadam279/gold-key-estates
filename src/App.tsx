@@ -257,6 +257,36 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/analytics"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin', 'marketer', 'sales_manager']}>
+              <Suspense fallback={null}>
+                <AdminAnalytics />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/integrations"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <AdminIntegrations />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/seo"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <AdminSEOAnalyzer />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
         
         {/* Language-prefixed routes */}
         <Route path="/en" element={<Navigate to="/" replace />} />
