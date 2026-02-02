@@ -6,7 +6,7 @@ import PortalLayout from '@/components/portal/PortalLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -41,12 +41,7 @@ const Settings = () => {
     try {
       const { error } = await supabase
         .from('settings')
-        .upsert({
-          key: 'whatsapp_number',
-          value: whatsappNumber,
-        }, {
-          onConflict: 'key',
-        });
+        .upsert({ key: 'whatsapp_number', value: whatsappNumber }, { onConflict: 'key' });
 
       if (error) throw error;
       toast.success('Settings saved successfully');
@@ -102,8 +97,8 @@ const Settings = () => {
           <Link to="/admin/seo">
             <Card className="glass-card border-border/20 hover:border-primary/30 transition-colors cursor-pointer">
               <CardContent className="p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <Search className="w-5 h-5 text-blue-500" />
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Search className="w-5 h-5 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-medium text-foreground">SEO Analyzer</h3>
@@ -115,24 +110,18 @@ const Settings = () => {
         </div>
 
         {/* General Settings */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="glass-card p-8 border border-border/20">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
                 <SettingsIcon className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h2 className="font-display text-xl font-semibold text-foreground">
-                  General Settings
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Configure your platform settings
-                </p>
+                <h2 className="font-display text-xl font-semibold text-foreground">General Settings</h2>
+                <p className="text-sm text-muted-foreground">Configure your platform settings</p>
               </div>
             </div>
+
             <div className="space-y-6">
               <div>
                 <Label className="flex items-center gap-2">
@@ -148,16 +137,9 @@ const Settings = () => {
                   placeholder="+201234567890"
                   className="input-luxury"
                 />
-                <p className="text-xs text-muted-foreground mt-2">
-                  Enter the full international number including country code (e.g., +201234567890)
-                </p>
               </div>
 
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="btn-gold gap-2"
-              >
+              <Button onClick={handleSave} disabled={isSaving} className="btn-gold gap-2">
                 {isSaving ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -174,43 +156,6 @@ const Settings = () => {
           </div>
         </motion.div>
       </div>
-    </PortalLayout>
-  );
-};
-
-export default Settings;
-              </p>
-              <Input
-                value={whatsappNumber}
-                onChange={(e) => setWhatsappNumber(e.target.value)}
-                placeholder="+201234567890"
-                className="input-luxury"
-              />
-              <p className="text-xs text-muted-foreground mt-2">
-                Enter the full international number including country code (e.g., +201234567890)
-              </p>
-            </div>
-
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="btn-gold gap-2"
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="w-5 h-5" />
-                  Save Settings
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </motion.div>
     </PortalLayout>
   );
 };
