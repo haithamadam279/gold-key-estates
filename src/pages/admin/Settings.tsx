@@ -133,12 +133,52 @@ const Settings = () => {
                 </p>
               </div>
             </div>
-              <Label className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-primary" />
-                WhatsApp Business Number
-              </Label>
-              <p className="text-sm text-muted-foreground mt-1 mb-2">
-                This number will be used for resale request communications
+            <div className="space-y-6">
+              <div>
+                <Label className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-primary" />
+                  WhatsApp Business Number
+                </Label>
+                <p className="text-sm text-muted-foreground mt-1 mb-2">
+                  This number will be used for resale request communications
+                </p>
+                <Input
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="+201234567890"
+                  className="input-luxury"
+                />
+                <p className="text-xs text-muted-foreground mt-2">
+                  Enter the full international number including country code (e.g., +201234567890)
+                </p>
+              </div>
+
+              <Button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="btn-gold gap-2"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5" />
+                    Save Settings
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </PortalLayout>
+  );
+};
+
+export default Settings;
               </p>
               <Input
                 value={whatsappNumber}
