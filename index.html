@@ -1,9 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
+    <meta name="theme-color" content="#0B0B0D" />
+    <meta name="color-scheme" content="dark light" />
+    
+    <!-- FOUC Prevention: Apply theme before first paint -->
+    <script>
+      (function() {
+        var STORAGE_KEY = 'source-theme-preference';
+        var stored = null;
+        try { stored = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+        
+        var theme = stored || 'system';
+        var resolved = theme;
+        
+        if (theme === 'system') {
+          resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved;
+        
+        // Update theme-color meta tag
+        var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+          metaThemeColor.setAttribute('content', resolved === 'dark' ? '#0B0B0D' : '#F8F7F4');
+        }
+      })();
+    </script>
+    
     <title>Source EG | Luxury Real Estate</title>
     <meta name="description" content="Discover exceptional properties in the most prestigious locations. Your journey to luxury living begins here." />
     <meta name="author" content="Source EG" />

@@ -15,7 +15,14 @@
 */
 
 @layer base {
-  :root {
+  /* ============================================
+     DARK THEME (Default Brand Look)
+     Dark Glassmorphism + Gold Accents
+     ============================================ */
+  :root,
+  .dark {
+    color-scheme: dark;
+    
     /* Core Dark Palette */
     --background: 240 6% 4%; /* #0B0B0D */
     --background-secondary: 220 10% 11%; /* #1A1C20 */
@@ -31,7 +38,7 @@
     --popover: 220 10% 11%;
     --popover-foreground: 220 12% 81%;
     
-    /* Gold Accent System */
+    /* Gold Accent System - Consistent across themes */
     --gold-hue: 43;
     --primary: var(--gold-hue) 74% 49%; /* Rich Gold #D4A536 */
     --primary-foreground: 240 6% 4%;
@@ -106,10 +113,98 @@
     --chart-5: 340 75% 55%;
   }
 
-  /* Light mode - same as dark for consistency */
+  /* ============================================
+     LIGHT THEME (Luxury Light Variant)
+     Warm ivory + gold accents - NOT plain white
+     ============================================ */
   .light {
-    --background: 240 6% 4%;
-    --foreground: 220 12% 81%;
+    color-scheme: light;
+    
+    /* Core Light Palette - Warm ivory/cream tones */
+    --background: 40 20% 97%; /* #F8F7F4 - Warm ivory */
+    --background-secondary: 40 15% 93%; /* #EFEDE8 - Soft cream */
+    --foreground: 220 15% 20%; /* #2B303B - Rich charcoal */
+    
+    /* Card System - Soft elevated surfaces */
+    --card: 40 20% 99%; /* Nearly white with warmth */
+    --card-foreground: 220 15% 20%;
+    --card-glass: 40 20% 98% / 0.9;
+    --card-border: 40 10% 85% / 0.5;
+    
+    /* Popover */
+    --popover: 40 20% 99%;
+    --popover-foreground: 220 15% 20%;
+    
+    /* Gold Accent System - Same gold, optimized for light */
+    --gold-hue: 43;
+    --primary: var(--gold-hue) 74% 42%; /* Slightly deeper gold for contrast */
+    --primary-foreground: 40 20% 99%;
+    --primary-hover: var(--gold-hue) 74% 35%;
+    --primary-glow: var(--gold-hue) 80% 50%;
+    
+    /* Secondary */
+    --secondary: 40 10% 90%;
+    --secondary-foreground: 220 15% 25%;
+    
+    /* Muted */
+    --muted: 40 10% 92%;
+    --muted-foreground: 220 8% 45%;
+    
+    /* Accent */
+    --accent: 40 12% 88%;
+    --accent-foreground: 220 15% 20%;
+    
+    /* Destructive */
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Success */
+    --success: 142 60% 38%;
+    --success-foreground: 0 0% 100%;
+    
+    /* Warning */
+    --warning: 38 92% 45%;
+    --warning-foreground: 220 15% 20%;
+    
+    /* Borders & Inputs */
+    --border: 40 10% 82%;
+    --input: 40 15% 95%;
+    --ring: var(--gold-hue) 74% 42%;
+    
+    /* Shadows - Softer for light mode */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.06);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.12), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+    --shadow-gold: 0 0 30px -5px hsl(var(--primary) / 0.25);
+    
+    /* Glassmorphism - Light variant */
+    --glass-blur: 20px;
+    --glass-bg: linear-gradient(135deg, hsl(40 20% 99% / 0.9) 0%, hsl(40 15% 97% / 0.85) 100%);
+    --glass-border: 1px solid hsl(40 10% 75% / 0.3);
+    
+    /* Gradients - Light variants */
+    --gradient-gold: linear-gradient(135deg, hsl(43 74% 42%) 0%, hsl(35 80% 38%) 50%, hsl(43 74% 48%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(40 20% 97%) 0%, hsl(40 15% 95%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(40 20% 99%) 0%, hsl(40 15% 96%) 100%);
+    --gradient-hero: radial-gradient(ellipse at top, hsl(40 20% 98%) 0%, hsl(40 20% 95%) 70%);
+    
+    /* Sidebar */
+    --sidebar-background: 40 15% 95%;
+    --sidebar-foreground: 220 15% 20%;
+    --sidebar-primary: var(--gold-hue) 74% 42%;
+    --sidebar-primary-foreground: 40 20% 99%;
+    --sidebar-accent: 40 12% 90%;
+    --sidebar-accent-foreground: 220 15% 25%;
+    --sidebar-border: 40 10% 85%;
+    --sidebar-ring: var(--gold-hue) 74% 42%;
+    
+    /* Chart Colors - Optimized for light background */
+    --chart-1: var(--gold-hue) 74% 42%;
+    --chart-2: 200 70% 45%;
+    --chart-3: 142 60% 38%;
+    --chart-4: 280 55% 50%;
+    --chart-5: 340 65% 48%;
   }
 }
 
