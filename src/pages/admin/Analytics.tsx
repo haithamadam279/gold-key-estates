@@ -4,21 +4,20 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   BarChart3,
   Users,
   Eye,
-  MousePointerClick,
   TrendingUp,
   Phone,
   MessageCircle,
-  Filter,
   Calendar,
   Monitor,
   Smartphone,
   Tablet,
-  Globe,
+  ChevronRight,
 } from 'lucide-react';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
