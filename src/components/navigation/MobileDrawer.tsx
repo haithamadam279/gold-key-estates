@@ -40,6 +40,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
   const { user, signOut, isAuthenticated } = useApiAuth();
   const { isAdmin } = useUserRole();
   const { ids: compareIds } = useCompare();
+  const { toggleTheme, isDark } = useThemeContext();
   const location = useLocation();
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
