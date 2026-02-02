@@ -288,6 +288,16 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/leads-intelligence"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin', 'marketer', 'sales_manager']}>
+              <Suspense fallback={null}>
+                <LeadsIntelligence />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
         
         {/* Language-prefixed routes */}
         <Route path="/en" element={<Navigate to="/" replace />} />
