@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          device_type: string | null
+          event_data: Json | null
+          event_name: string
+          id: string
+          language: string | null
+          page_title: string | null
+          page_url: string | null
+          referrer: string | null
+          session_id: string | null
+          user_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_type?: string | null
+          event_data?: Json | null
+          event_name: string
+          id?: string
+          language?: string | null
+          page_title?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_type?: string | null
+          event_data?: Json | null
+          event_name?: string
+          id?: string
+          language?: string | null
+          page_title?: string | null
+          page_url?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
+      analytics_settings: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          key: string
+          updated_at: string
+          value: string | null
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key: string
+          updated_at?: string
+          value?: string | null
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: string | null
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           created_at: string
@@ -51,6 +135,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      heatmap_exclusions: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string | null
+          route_pattern: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          route_pattern: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          route_pattern?: string
+        }
+        Relationships: []
       }
       leads: {
         Row: {
