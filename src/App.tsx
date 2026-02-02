@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import LoadingScreen from "@/components/loading/LoadingScreen";
 import RouteLoadingHandler from "@/components/loading/RouteLoadingHandler";
 import CompareBar from "@/components/compare/CompareBar";
+import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import "@/lib/i18n";
 
 // Public Pages
@@ -46,6 +47,9 @@ const ManageInventory = lazy(() => import("./pages/admin/ManageInventory"));
 const ManageLeads = lazy(() => import("./pages/admin/ManageLeads"));
 const ManageCMS = lazy(() => import("./pages/admin/ManageCMS"));
 const GoogleSyncSettings = lazy(() => import("./pages/admin/GoogleSyncSettings"));
+const AdminAnalytics = lazy(() => import("./pages/admin/Analytics"));
+const AdminIntegrations = lazy(() => import("./pages/admin/Integrations"));
+const AdminSEOAnalyzer = lazy(() => import("./pages/admin/SEOAnalyzer"));
 
 // Agent Pages (lazy loaded)
 const AgentDashboard = lazy(() => import("./pages/agent/Dashboard"));
@@ -60,7 +64,7 @@ const AppContent = () => {
   const isComparePage = location.pathname === '/compare';
 
   return (
-    <>
+    <AnalyticsProvider>
       <LoadingScreen isLoading={isLoading} minDuration={1000} />
       <RouteLoadingHandler />
       {!isComparePage && <CompareBar />}
@@ -253,6 +257,36 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/analytics"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin', 'marketer', 'sales_manager']}>
+              <Suspense fallback={null}>
+                <AdminAnalytics />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/integrations"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <AdminIntegrations />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/seo"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <AdminSEOAnalyzer />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
         
         {/* Language-prefixed routes */}
         <Route path="/en" element={<Navigate to="/" replace />} />
@@ -263,7 +297,7 @@ const AppContent = () => {
         {/* Catch-all */}
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </AnalyticsProvider>
   );
 };
 

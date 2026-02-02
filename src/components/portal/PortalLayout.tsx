@@ -46,6 +46,9 @@ const adminNavItems = [
   { path: '/admin/documents', label: 'Documents', icon: FileText },
   { path: '/admin/resale', label: 'Resale Requests', icon: RefreshCw },
   { path: '/admin/cms', label: 'CMS', icon: Layers },
+  { path: '/admin/analytics', label: 'Analytics', icon: LayoutDashboard },
+  { path: '/admin/integrations', label: 'Integrations', icon: Settings },
+  { path: '/admin/seo', label: 'SEO Analyzer', icon: FileText },
   { path: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -60,6 +63,8 @@ const roleLabels: Record<UserRole, string> = {
   admin: 'Administrator',
   agent: 'Agent',
   sales_agent: 'Sales Agent',
+  sales_manager: 'Sales Manager',
+  marketer: 'Marketer',
   client: 'Client',
 };
 
