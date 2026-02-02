@@ -22,7 +22,7 @@ async function trackToDatabase(
   
   const { error } = await supabase.from('analytics_events').insert([{
     event_name: eventName,
-    event_data: eventData as Record<string, unknown>,
+    event_data: JSON.parse(JSON.stringify(eventData)),
     session_id: getSessionId(),
     page_url: window.location.href,
     page_title: document.title,
