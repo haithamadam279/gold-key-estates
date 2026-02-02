@@ -96,6 +96,137 @@ export type Database = {
           },
         ]
       }
+      navigation_cta: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id: string
+          updated_at?: string
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navigation_cta_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_menus"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      navigation_items: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          is_mega_menu: boolean
+          is_visible: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          open_in_new_tab: boolean
+          parent_id: string | null
+          roles_allowed: string[] | null
+          sort_order: number
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_mega_menu?: boolean
+          is_visible?: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          roles_allowed?: string[] | null
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_mega_menu?: boolean
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id?: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          roles_allowed?: string[] | null
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navigation_items_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_menus"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "navigation_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      navigation_menus: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
