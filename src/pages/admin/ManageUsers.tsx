@@ -62,7 +62,7 @@ const createUserSchema = z.object({
   email: z.string().email('Invalid email address'),
   fullName: z.string().min(1, 'Full name is required'),
   phone: z.string().optional(),
-  role: z.enum(['super_admin', 'admin', 'agent', 'sales_agent', 'client']),
+  role: z.enum(['super_admin', 'admin', 'agent', 'sales_agent', 'sales_manager', 'marketer', 'client']),
 });
 
 const roleConfig: Record<UserRole, { label: string; color: string }> = {
@@ -70,6 +70,8 @@ const roleConfig: Record<UserRole, { label: string; color: string }> = {
   admin: { label: 'Admin', color: 'bg-primary/20 text-primary border-primary/30' },
   agent: { label: 'Agent', color: 'bg-purple-500/20 text-purple-400 border-purple-500/30' },
   sales_agent: { label: 'Sales Agent', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
+  sales_manager: { label: 'Sales Manager', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
+  marketer: { label: 'Marketer', color: 'bg-pink-500/20 text-pink-400 border-pink-500/30' },
   client: { label: 'Client', color: 'bg-secondary text-muted-foreground border-border/30' },
 };
 

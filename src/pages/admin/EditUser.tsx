@@ -46,7 +46,7 @@ const updateUserSchema = z.object({
   fullName: z.string().min(1, 'Full name is required').max(100, 'Name too long'),
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
-  role: z.enum(['super_admin', 'admin', 'agent', 'sales_agent', 'client']),
+  role: z.enum(['super_admin', 'admin', 'agent', 'sales_agent', 'sales_manager', 'marketer', 'client']),
   status: z.enum(['active', 'inactive', 'pending']),
 });
 
@@ -55,6 +55,8 @@ const roleLabels: Record<UserRole, string> = {
   admin: 'Admin',
   agent: 'Agent',
   sales_agent: 'Sales Agent',
+  sales_manager: 'Sales Manager',
+  marketer: 'Marketer',
   client: 'Client',
 };
 
