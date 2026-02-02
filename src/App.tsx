@@ -64,7 +64,7 @@ const AppContent = () => {
   const isComparePage = location.pathname === '/compare';
 
   return (
-    <>
+    <AnalyticsProvider>
       <LoadingScreen isLoading={isLoading} minDuration={1000} />
       <RouteLoadingHandler />
       {!isComparePage && <CompareBar />}
