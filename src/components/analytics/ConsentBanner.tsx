@@ -5,6 +5,7 @@
 
 import CookieConsent from 'react-cookie-consent';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 
 const ConsentBanner = () => {
   const { language } = useLanguage();
@@ -37,6 +38,7 @@ const ConsentBanner = () => {
     
     // Trigger analytics initialization
     window.dispatchEvent(new CustomEvent('consent_granted'));
+    analytics.trackConsentGranted();
   };
 
   const handleDecline = () => {
@@ -46,6 +48,7 @@ const ConsentBanner = () => {
       functional: true,
       timestamp: Date.now(),
     }));
+    analytics.trackConsentDeclined();
   };
 
   return (

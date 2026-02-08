@@ -1,10 +1,13 @@
 /**
  * Analytics Event Tracker
  * Central tracking service with debouncing and consent awareness
+ *
+ * Taxonomy: CLICK · VIEW · ACTION · SYSTEM
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { AnalyticsEventName, EventPayload } from './types';
+import type { AnalyticsEventName, EventPayload, EventCategory } from './types';
+import { EVENT_CATEGORY } from './types';
 import {
   getSessionId,
   getDeviceType,
@@ -13,16 +16,29 @@ import {
   debounce,
 } from './utils';
 
-// Track event to Supabase
+// ── Helpers ─────────────────────────────────────────────
+
+/** Derive category from dot-prefixed event name (e.g. "click.whatsapp" → "click") */
+function deriveCategory(eventName: string): EventCategory {
+  const prefix = eventName.split('.')[0] as EventCategory;
+  if (Object.values(EVENT_CATEGORY).includes(prefix)) return prefix;
+  return EVENT_CATEGORY.ACTION; // fallback
+}
+
+// ── Core Tracking ───────────────────────────────────────
+
 async function trackToDatabase(
   eventName: AnalyticsEventName,
   eventData: EventPayload = {}
 ): Promise<void> {
   const utmParams = getPersistedUTMParams();
-  
+
   const { error } = await supabase.from('analytics_events').insert([{
     event_name: eventName,
-    event_data: JSON.parse(JSON.stringify(eventData)),
+    event_data: JSON.parse(JSON.stringify({
+      ...eventData,
+      category: deriveCategory(eventName),
+    })),
     session_id: getSessionId(),
     page_url: window.location.href,
     page_title: document.title,
@@ -59,12 +75,13 @@ function trackToPixels(eventName: string, eventData: EventPayload = {}): void {
   }
 }
 
-// Main tracking function with consent check
+// ── Public API ──────────────────────────────────────────
+
 export async function trackEvent(
   eventName: AnalyticsEventName,
   eventData: EventPayload = {}
 ): Promise<void> {
-  // Always track to database (first-party data)
+  // Always track to first-party database
   await trackToDatabase(eventName, eventData);
 
   // Only track to third-party pixels if consent given
@@ -73,52 +90,101 @@ export async function trackEvent(
   }
 }
 
-// Debounced version for high-frequency events
 export const trackEventDebounced = debounce(trackEvent, 300);
 
-// Convenience methods for common events
+// ── Convenience Methods ─────────────────────────────────
+
 export const analytics = {
+  // ─── VIEW ──────────────────────────────────────────
   trackPageView: (pageTitle?: string) =>
-    trackEvent('page_view', { page_title: pageTitle || document.title }),
+    trackEvent('view.page', { page_title: pageTitle || document.title }),
 
   trackPropertyView: (propertyId: string, propertyTitle?: string, price?: number) =>
-    trackEvent('view_property', { property_id: propertyId, property_title: propertyTitle, property_price: price }),
+    trackEvent('view.property', { property_id: propertyId, property_title: propertyTitle, property_price: price }),
 
-  trackSearch: (query: string, filters?: Record<string, unknown>, resultsCount?: number) =>
-    trackEvent('search', { query, filters, results_count: resultsCount }),
+  trackProjectView: (projectId: string, projectTitle?: string) =>
+    trackEvent('view.project', { property_id: projectId, property_title: projectTitle }),
 
-  trackFilterApply: (filters: Record<string, unknown>) =>
-    trackEvent('filter_apply', { filters }),
+  trackCompareView: () =>
+    trackEvent('view.compare', {}),
 
-  trackCompareAdd: (propertyId: string, propertyTitle?: string) =>
-    trackEvent('compare_add', { property_id: propertyId, property_title: propertyTitle }),
-
-  trackCompareRemove: (propertyId: string) =>
-    trackEvent('compare_remove', { property_id: propertyId }),
-
-  trackLeadSubmit: (source: string, propertyId?: string, formType?: string) =>
-    trackEvent('lead_submit', { lead_source: source, property_id: propertyId, form_type: formType }),
-
+  // ─── CLICK ─────────────────────────────────────────
   trackWhatsAppClick: (destination?: string, context?: string) =>
-    trackEvent('whatsapp_click', { destination, button_location: context }),
+    trackEvent('click.whatsapp', { destination, button_location: context }),
 
   trackPhoneClick: (destination?: string, context?: string) =>
-    trackEvent('phone_click', { destination, button_location: context }),
+    trackEvent('click.phone', { destination, button_location: context }),
 
   trackCTAClick: (buttonText: string, buttonLocation: string) =>
-    trackEvent('cta_book_consultation_click', { button_text: buttonText, button_location: buttonLocation }),
+    trackEvent('click.cta', { button_text: buttonText, button_location: buttonLocation }),
 
-  trackScrollDepth: (depthPercent: number) =>
-    trackEventDebounced('scroll_depth', { depth_percent: depthPercent }),
+  trackShareClick: (propertyId?: string, method?: string) =>
+    trackEvent('click.share', { property_id: propertyId, button_text: method }),
+
+  trackFavoriteClick: (propertyId: string, isFavorite: boolean) =>
+    trackEvent('click.favorite', { property_id: propertyId, button_text: isFavorite ? 'add' : 'remove' }),
+
+  trackBrochureClick: (propertyId?: string) =>
+    trackEvent('click.brochure', { property_id: propertyId }),
+
+  trackCompareAdd: (propertyId: string, propertyTitle?: string) =>
+    trackEvent('click.compare_add', { property_id: propertyId, property_title: propertyTitle }),
+
+  trackCompareRemove: (propertyId: string) =>
+    trackEvent('click.compare_remove', { property_id: propertyId }),
+
+  // ─── ACTION ────────────────────────────────────────
+  trackSearch: (query: string, filters?: Record<string, unknown>, resultsCount?: number) =>
+    trackEvent('action.search', { query, filters, results_count: resultsCount }),
+
+  trackFilterApply: (filters: Record<string, unknown>) =>
+    trackEvent('action.filter_apply', { filters }),
+
+  trackLeadSubmit: (source: string, propertyId?: string, formType?: string) =>
+    trackEvent('action.lead_submit', { lead_source: source, property_id: propertyId, form_type: formType }),
+
+  trackContactSubmit: (formData: { name?: string; hasPhone?: boolean }) =>
+    trackEvent('action.contact_submit', { button_text: formData.name ? 'with_name' : 'anonymous', button_location: formData.hasPhone ? 'with_phone' : 'no_phone' }),
+
+  trackLoginSuccess: (method?: string) =>
+    trackEvent('action.login_success', { method } as unknown as EventPayload),
+
+  trackLoginFail: (errorCode?: string) =>
+    trackEvent('action.login_fail', { error_code: errorCode } as unknown as EventPayload),
+
+  trackLogout: () =>
+    trackEvent('action.logout', {}),
+
+  trackResaleRequest: (propertyId: string) =>
+    trackEvent('action.resale_request', { property_id: propertyId }),
+
+  trackAdminApprove: (entityType: string, entityId: string) =>
+    trackEvent('action.admin_approve', { entity_type: entityType, entity_id: entityId } as unknown as EventPayload),
+
+  trackAdminReject: (entityType: string, entityId: string) =>
+    trackEvent('action.admin_reject', { entity_type: entityType, entity_id: entityId } as unknown as EventPayload),
+
+  trackLeadAssign: (leadId: string, agentId: string) =>
+    trackEvent('action.lead_assign', { entity_id: leadId, action_detail: agentId } as unknown as EventPayload),
 
   trackPropertyFinderStart: () =>
-    trackEvent('property_finder_start', {}),
+    trackEvent('action.property_finder_start', {}),
 
   trackPropertyFinderStep: (step: number, stepName: string) =>
-    trackEvent('property_finder_step', { step, step_name: stepName } as unknown as EventPayload),
+    trackEvent('action.property_finder_step', { step, step_name: stepName } as unknown as EventPayload),
 
   trackPropertyFinderComplete: (preferences: Record<string, unknown>) =>
-    trackEvent('property_finder_complete', { preferences } as unknown as EventPayload),
+    trackEvent('action.property_finder_complete', { preferences } as unknown as EventPayload),
+
+  // ─── SYSTEM ────────────────────────────────────────
+  trackScrollDepth: (depthPercent: number) =>
+    trackEventDebounced('system.scroll_depth', { depth_percent: depthPercent }),
+
+  trackConsentGranted: () =>
+    trackEvent('system.consent_granted', {}),
+
+  trackConsentDeclined: () =>
+    trackEvent('system.consent_declined', {}),
 };
 
 export default analytics;

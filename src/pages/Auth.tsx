@@ -11,6 +11,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import sourceLogo from '@/assets/source-logo.svg';
 import ForgotPasswordModal from '@/components/auth/ForgotPasswordModal';
+import { analytics } from '@/lib/analytics';
 
 const loginSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),
@@ -56,8 +57,10 @@ const Auth = () => {
     setIsLoading(false);
 
     if (error) {
+      analytics.trackLoginFail(error.message);
       toast.error('Login failed. Please check your credentials.');
     } else {
+      analytics.trackLoginSuccess('email');
       toast.success('Welcome back!');
       navigate('/client-portal/dashboard', { replace: true });
     }

@@ -38,6 +38,8 @@ import MortgageCalculator from '@/components/property/MortgageCalculator';
 import CompareBar from '@/components/compare/CompareBar';
 import { mockPropertiesApi } from '@/lib/api';
 import { Property, PropertyListItem } from '@/lib/api/types';
+import { analytics } from '@/lib/analytics';
+import { logSessionEvent, SESSION_EVENT_TYPES } from '@/lib/analytics/attribution';
 
 const PropertyDetails = () => {
   const { t, i18n } = useTranslation();
@@ -68,6 +70,11 @@ const PropertyDetails = () => {
           return;
         }
         setProperty(data);
+        
+        // Track property view
+        const viewTitle = data.translations?.en?.title || 'Unknown';
+        analytics.trackPropertyView(data.id, viewTitle, data.price);
+        logSessionEvent(SESSION_EVENT_TYPES.PROPERTY_VIEWED, data.id);
         
         // Fetch similar properties
         // In a real implementation, this would be a separate API call
@@ -259,14 +266,21 @@ const PropertyDetails = () => {
           {/* Actions */}
           <div className="absolute top-4 right-4 flex gap-2">
             <button
-              onClick={() => setIsFavorite(!isFavorite)}
+              onClick={() => {
+                const next = !isFavorite;
+                setIsFavorite(next);
+                analytics.trackFavoriteClick(property.id, next);
+              }}
               className={`w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-all ${
                 isFavorite ? 'bg-primary text-primary-foreground' : 'bg-background/50 text-foreground hover:bg-background/80'
               }`}
             >
               <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
             </button>
-            <button className="w-10 h-10 rounded-full bg-background/50 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background/80 transition-all">
+            <button
+              onClick={() => analytics.trackShareClick(property.id, 'share_button')}
+              className="w-10 h-10 rounded-full bg-background/50 backdrop-blur-sm flex items-center justify-center text-foreground hover:bg-background/80 transition-all"
+            >
               <Share2 className="w-5 h-5" />
             </button>
           </div>
@@ -431,18 +445,18 @@ const PropertyDetails = () => {
 
               {/* CTAs */}
               <div className="space-y-3">
-                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer">
+                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" onClick={() => analytics.trackWhatsAppClick(undefined, 'property_details')}>
                   <Button className="w-full btn-gold h-12 text-base gap-2">
                     <MessageCircle className="w-5 h-5" />
                     {t('property.whatsapp')}
                   </Button>
                 </a>
                 <CompareToggle propertyId={property.id} variant="details" />
-                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50">
+                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50" onClick={() => analytics.trackPhoneClick(undefined, 'property_details')}>
                   <Phone className="w-5 h-5" />
                   {t('property.call')}
                 </Button>
-                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50">
+                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50" onClick={() => analytics.trackBrochureClick(property.id)}>
                   <Download className="w-5 h-5" />
                   {t('property.brochure')}
                 </Button>
