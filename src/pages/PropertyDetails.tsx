@@ -445,7 +445,7 @@ const PropertyDetails = () => {
 
               {/* CTAs */}
               <div className="space-y-3">
-                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer">
+                <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" onClick={() => analytics.trackWhatsAppClick(undefined, 'property_details')}>
                   <Button className="w-full btn-gold h-12 text-base gap-2">
                     <MessageCircle className="w-5 h-5" />
                     {t('property.whatsapp')}
