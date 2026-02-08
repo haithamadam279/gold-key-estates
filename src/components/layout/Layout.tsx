@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { forwardRef, ReactNode } from 'react';
 import EnterpriseNavbar from '@/components/navigation/EnterpriseNavbar';
 import Footer from './Footer';
 
@@ -7,16 +7,20 @@ interface LayoutProps {
   showFooter?: boolean;
 }
 
-const Layout = ({ children, showFooter = true }: LayoutProps) => {
-  return (
-    <div className="min-h-screen flex flex-col">
-      <EnterpriseNavbar />
-      <main className="flex-1">
-        {children}
-      </main>
-      {showFooter && <Footer />}
-    </div>
-  );
-};
+const Layout = forwardRef<HTMLDivElement, LayoutProps>(
+  ({ children, showFooter = true }, ref) => {
+    return (
+      <div ref={ref} className="min-h-screen flex flex-col">
+        <EnterpriseNavbar />
+        <main className="flex-1">
+          {children}
+        </main>
+        {showFooter && <Footer />}
+      </div>
+    );
+  }
+);
+
+Layout.displayName = 'Layout';
 
 export default Layout;
