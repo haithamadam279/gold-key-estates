@@ -28,6 +28,9 @@ const Contact = () => {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
     
+    // Track contact form submission
+    analytics.trackContactSubmit({ name: formData.name, hasPhone: !!formData.phone });
+    
     toast({
       title: t('contact.success'),
       description: 'Our team will get back to you shortly.',

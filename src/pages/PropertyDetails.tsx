@@ -452,11 +452,11 @@ const PropertyDetails = () => {
                   </Button>
                 </a>
                 <CompareToggle propertyId={property.id} variant="details" />
-                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50">
+                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50" onClick={() => analytics.trackPhoneClick(undefined, 'property_details')}>
                   <Phone className="w-5 h-5" />
                   {t('property.call')}
                 </Button>
-                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50">
+                <Button variant="outline" className="w-full h-12 text-base gap-2 border-border/50 hover:border-primary/50" onClick={() => analytics.trackBrochureClick(property.id)}>
                   <Download className="w-5 h-5" />
                   {t('property.brochure')}
                 </Button>

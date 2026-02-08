@@ -57,8 +57,10 @@ const Auth = () => {
     setIsLoading(false);
 
     if (error) {
+      analytics.trackLoginFail(error.message);
       toast.error('Login failed. Please check your credentials.');
     } else {
+      analytics.trackLoginSuccess('email');
       toast.success('Welcome back!');
       navigate('/client-portal/dashboard', { replace: true });
     }

@@ -44,11 +44,13 @@ export const ContactAgentButton = ({
         : 'Hello, I would like to inquire about my properties'
     );
     const whatsappNumber = agentInfo.whatsapp?.replace(/[^0-9]/g, '') || agentInfo.phone.replace(/[^0-9]/g, '');
+    analytics.trackWhatsAppClick(whatsappNumber, 'contact_agent_button');
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
     setIsOpen(false);
   };
 
   const handleCall = () => {
+    analytics.trackPhoneClick(agentInfo.phone, 'contact_agent_button');
     window.open(`tel:${agentInfo.phone}`, '_self');
     setIsOpen(false);
   };

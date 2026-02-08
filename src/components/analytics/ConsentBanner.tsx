@@ -38,6 +38,7 @@ const ConsentBanner = () => {
     
     // Trigger analytics initialization
     window.dispatchEvent(new CustomEvent('consent_granted'));
+    analytics.trackConsentGranted();
   };
 
   const handleDecline = () => {
@@ -47,6 +48,7 @@ const ConsentBanner = () => {
       functional: true,
       timestamp: Date.now(),
     }));
+    analytics.trackConsentDeclined();
   };
 
   return (
