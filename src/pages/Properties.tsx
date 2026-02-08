@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Grid, List, SlidersHorizontal } from 'lucide-react';
+import { Grid, List } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import PropertyCard from '@/components/property/PropertyCard';
-import SearchFilters from '@/components/property/SearchFilters';
+import PropertySearchBar from '@/components/property/PropertySearchBar';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -120,17 +120,16 @@ const Properties = () => {
   const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('newest');
-  const [showFilters, setShowFilters] = useState(false);
 
   return (
     <Layout>
-      {/* Page Header */}
-      <section className="py-16 bg-gradient-card border-b border-border/30">
+      {/* Page Header + Search Bar */}
+      <section className="py-16 pb-12 bg-gradient-card border-b border-border/30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-2xl mx-auto"
+            className="text-center max-w-2xl mx-auto mb-10"
           >
             <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
               {t('nav.properties')}
@@ -139,23 +138,23 @@ const Properties = () => {
               Discover our curated collection of premium properties across Egypt's most sought-after locations.
             </p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Filters & Results */}
-      <section className="py-12">
-        <div className="container mx-auto px-6">
-          {/* Search Filters */}
+          {/* Standalone Search Bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.15 }}
           >
-            <SearchFilters onSearch={(filters) => console.log(filters)} />
+            <PropertySearchBar onSearch={(filters) => console.log(filters)} />
           </motion.div>
+        </div>
+      </section>
 
+      {/* Results */}
+      <section className="py-12">
+        <div className="container mx-auto px-6">
           {/* Results Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-10 mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <p className="text-muted-foreground">
                 <span className="text-foreground font-medium">{properties.length}</span> {t('search.results')}
