@@ -123,13 +123,13 @@ const Properties = () => {
 
   return (
     <Layout>
-      {/* Page Header */}
-      <section className="py-16 bg-gradient-card border-b border-border/30">
+      {/* Page Header + Search Bar */}
+      <section className="py-16 pb-12 bg-gradient-card border-b border-border/30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-2xl mx-auto"
+            className="text-center max-w-2xl mx-auto mb-10"
           >
             <h1 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-4">
               {t('nav.properties')}
@@ -138,19 +138,14 @@ const Properties = () => {
               Discover our curated collection of premium properties across Egypt's most sought-after locations.
             </p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Filters & Results */}
-      <section className="py-12">
-        <div className="container mx-auto px-6">
-          {/* Search Filters */}
+          {/* Standalone Search Bar */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.15 }}
           >
-            <SearchFilters onSearch={(filters) => console.log(filters)} />
+            <PropertySearchBar onSearch={(filters) => console.log(filters)} />
           </motion.div>
 
           {/* Results Header */}
