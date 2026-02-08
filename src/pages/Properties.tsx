@@ -147,9 +147,14 @@ const Properties = () => {
           >
             <PropertySearchBar onSearch={(filters) => console.log(filters)} />
           </motion.div>
+        </div>
+      </section>
 
+      {/* Results */}
+      <section className="py-12">
+        <div className="container mx-auto px-6">
           {/* Results Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-10 mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <p className="text-muted-foreground">
                 <span className="text-foreground font-medium">{properties.length}</span> {t('search.results')}
