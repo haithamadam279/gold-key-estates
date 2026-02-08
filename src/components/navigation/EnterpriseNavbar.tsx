@@ -88,8 +88,7 @@ export const EnterpriseNavbar = () => {
   const portalPath = isAdmin ? '/admin/dashboard' : '/client-portal/dashboard';
   const isAuthBusy = authLoading || roleLoading;
 
-  // Check if on search pages to show integrated quick search
-  const isSearchPage = location.pathname === '/properties' || location.pathname === '/projects';
+  // Navigation items filtered by role
 
   // Filter navigation items by role
   const filterItemsByRole = (items: NavigationItem[]): NavigationItem[] => {
