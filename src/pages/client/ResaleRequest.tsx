@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useAuth } from '@/contexts/AuthContext';
+import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -39,7 +39,7 @@ interface ResaleRequest {
 }
 
 const ResaleRequest = () => {
-  const { user } = useAuth();
+  const { user } = useApiAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [requests, setRequests] = useState<ResaleRequest[]>([]);
   const [selectedProperty, setSelectedProperty] = useState<string>('');
