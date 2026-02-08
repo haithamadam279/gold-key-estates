@@ -27,7 +27,6 @@ import { cn } from '@/lib/utils';
 import sourceLogo from '@/assets/source-logo.svg';
 import MegaMenu from './MegaMenu';
 import MobileDrawer from './MobileDrawer';
-import QuickSearch from './QuickSearch';
 import DynamicIcon from './DynamicIcon';
 import { ThemeToggle } from '@/components/theme';
 
@@ -88,8 +87,7 @@ export const EnterpriseNavbar = () => {
   const portalPath = isAdmin ? '/admin/dashboard' : '/client-portal/dashboard';
   const isAuthBusy = authLoading || roleLoading;
 
-  // Check if on search pages to show integrated quick search
-  const isSearchPage = location.pathname === '/properties' || location.pathname === '/projects';
+  // Navigation items filtered by role
 
   // Filter navigation items by role
   const filterItemsByRole = (items: NavigationItem[]): NavigationItem[] => {
@@ -217,11 +215,6 @@ export const EnterpriseNavbar = () => {
 
               {/* Right: Actions */}
               <div className="flex items-center gap-2">
-                {/* Quick Search (Desktop) */}
-                <div className="hidden md:block">
-                  <QuickSearch variant="header" />
-                </div>
-
                 {/* Theme Toggle */}
                 <ThemeToggle className="hidden sm:flex" />
 
@@ -304,16 +297,6 @@ export const EnterpriseNavbar = () => {
               </div>
             </div>
 
-            {/* Integrated Quick Search Bar (Search Pages) */}
-            {isSearchPage && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                className="pb-3 hidden md:block"
-              >
-                <QuickSearch variant="expanded" />
-              </motion.div>
-            )}
           </div>
         </div>
       </nav>
