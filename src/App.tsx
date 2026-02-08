@@ -36,124 +36,116 @@ import Settings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
 
-const AppContent = () => {
+const AppRoutes = () => {
   const { isLoading } = useLoadingScreen({ minDuration: 1500 });
 
   return (
     <>
       <LoadingScreen isVisible={isLoading} />
       <Routes>
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/properties/:id" element={<PropertyDetails />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:id" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/about" element={<About />} />
-              
-              {/* Client Portal Routes */}
-              <Route
-                path="/client-portal/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <ClientDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/client-portal/assets"
-                element={
-                  <ProtectedRoute>
-                    <MyAssets />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/client-portal/documents"
-                element={
-                  <ProtectedRoute>
-                    <Documents />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/client-portal/resale"
-                element={
-                  <ProtectedRoute>
-                    <ResaleRequest />
-                  </ProtectedRoute>
-                }
-              />
+        {/* Public Routes */}
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/properties" element={<Properties />} />
+        <Route path="/properties/:id" element={<PropertyDetails />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/:id" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
 
-              {/* Admin Dashboard Routes */}
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/users"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <ManageUsers />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/properties"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <ManageProperties />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/documents"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <ManageDocuments />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/resale"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <ManageResaleRequests />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/settings"
-                element={
-                  <ProtectedRoute requiredRole="admin">
-                    <Settings />
-                  </ProtectedRoute>
-                }
-              />
-              
-              {/* Language-prefixed routes */}
-              <Route path="/en" element={<Navigate to="/" replace />} />
-              <Route path="/ar" element={<Navigate to="/" replace />} />
-              <Route path="/en/*" element={<Navigate to="/" replace />} />
-              <Route path="/ar/*" element={<Navigate to="/" replace />} />
-              
-              {/* Catch-all */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+        {/* Client Portal Routes */}
+        <Route
+          path="/client-portal/dashboard"
+          element={
+            <ProtectedRoute>
+              <ClientDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/client-portal/assets"
+          element={
+            <ProtectedRoute>
+              <MyAssets />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/client-portal/documents"
+          element={
+            <ProtectedRoute>
+              <Documents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/client-portal/resale"
+          element={
+            <ProtectedRoute>
+              <ResaleRequest />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Dashboard Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <ManageUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/properties"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <ManageProperties />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/documents"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <ManageDocuments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/resale"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <ManageResaleRequests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Language-prefixed routes */}
+        <Route path="/en" element={<Navigate to="/" replace />} />
+        <Route path="/ar" element={<Navigate to="/" replace />} />
+        <Route path="/en/*" element={<Navigate to="/" replace />} />
+        <Route path="/ar/*" element={<Navigate to="/" replace />} />
+
+        {/* Catch-all */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 };
@@ -166,7 +158,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <AppContent />
+            <AppRoutes />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
