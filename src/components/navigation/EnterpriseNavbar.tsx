@@ -28,7 +28,6 @@ import sourceLogo from '@/assets/source-logo.svg';
 import MegaMenu from './MegaMenu';
 import MobileDrawer from './MobileDrawer';
 import DynamicIcon from './DynamicIcon';
-import DynamicIcon from './DynamicIcon';
 import { ThemeToggle } from '@/components/theme';
 
 export const EnterpriseNavbar = () => {
