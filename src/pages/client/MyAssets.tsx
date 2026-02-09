@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, MapPin, Loader2, AlertCircle } from 'lucide-react';
+import { Building2, MapPin, Loader2, AlertCircle, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
