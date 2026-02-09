@@ -202,10 +202,10 @@ const Index = () => {
               transition={{ duration: 0.8 }}
             >
               <h1 className="font-display text-5xl md:text-7xl font-semibold text-foreground mb-6 leading-tight">
-                Make It <span className="text-gold-gradient">Yours</span>
+                {hero.headline} <span className="text-gold-gradient">{hero.highlightWord}</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
-                {t('hero.subtitle')}
+                {hero.subtitle}
               </p>
             </motion.div>
 
