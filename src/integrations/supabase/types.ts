@@ -163,7 +163,9 @@ export type Database = {
           area_sqm: number | null
           assigned_agent_id: string | null
           assigned_at: string | null
+          assigned_broker_id: string | null
           assigned_by: string | null
+          broker_assigned_at: string | null
           browser_language: string | null
           budget_max: number | null
           budget_min: number | null
@@ -199,7 +201,9 @@ export type Database = {
           area_sqm?: number | null
           assigned_agent_id?: string | null
           assigned_at?: string | null
+          assigned_broker_id?: string | null
           assigned_by?: string | null
+          broker_assigned_at?: string | null
           browser_language?: string | null
           budget_max?: number | null
           budget_min?: number | null
@@ -235,7 +239,9 @@ export type Database = {
           area_sqm?: number | null
           assigned_agent_id?: string | null
           assigned_at?: string | null
+          assigned_broker_id?: string | null
           assigned_by?: string | null
+          broker_assigned_at?: string | null
           browser_language?: string | null
           budget_max?: number | null
           budget_min?: number | null
@@ -838,6 +844,7 @@ export type Database = {
         | "sales_agent"
         | "sales_manager"
         | "marketer"
+        | "broker"
       notification_entity_type:
         | "lead"
         | "property"
@@ -987,7 +994,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "client", "sales_agent", "sales_manager", "marketer"],
+      app_role: [
+        "admin",
+        "client",
+        "sales_agent",
+        "sales_manager",
+        "marketer",
+        "broker",
+      ],
       notification_entity_type: [
         "lead",
         "property",
