@@ -526,10 +526,11 @@ const ManageProperties = () => {
 
                 {/* Price */}
                 {property.price && (
-                  <div className="mt-3 pt-3 border-t border-border/30">
+                  <div className="mt-3 pt-3 border-t border-border/30 flex items-center gap-2">
                     <span className="text-xl font-display font-semibold text-gold-gradient">
                       EGP {property.price.toLocaleString()}
                     </span>
+                    <PriceDeltaIndicator percent={property.price_delta_percent} />
                   </div>
                 )}
               </div>

@@ -174,10 +174,11 @@ const MyAssets = () => {
 
                 {/* Price */}
                 {property.price && (
-                  <div className="mt-4 pt-4 border-t border-border/30">
+                  <div className="mt-4 pt-4 border-t border-border/30 flex items-center gap-3">
                     <span className="text-2xl font-display font-semibold text-gold-gradient">
                       EGP {property.price.toLocaleString()}
                     </span>
+                    <PriceDeltaIndicator percent={property.price_delta_percent} />
                   </div>
                 )}
               </div>
