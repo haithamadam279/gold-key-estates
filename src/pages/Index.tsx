@@ -215,15 +215,15 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Link to="/properties">
+              <Link to={hero.primaryCta.link}>
                 <Button className="btn-gold text-lg px-8 py-6">
-                  {t('hero.explore')}
+                  {hero.primaryCta.label}
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <Link to="/find-property">
+              <Link to={hero.secondaryCta.link}>
                 <Button variant="outline" className="text-lg px-8 py-6 border-border/50 hover:border-primary/50 hover:bg-primary/5">
-                  Find your property
+                  {hero.secondaryCta.label}
                 </Button>
               </Link>
             </motion.div>
