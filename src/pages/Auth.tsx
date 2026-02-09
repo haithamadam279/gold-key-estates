@@ -28,10 +28,16 @@ const Auth = () => {
   const { signIn, user, isLoading: authLoading } = useApiAuth();
   const navigate = useNavigate();
 
+  const getDashboardPath = (role?: string) => {
+    if (role === 'admin' || role === 'super_admin') return '/admin/dashboard';
+    if (role === 'agent' || role === 'sales_agent') return '/agent/dashboard';
+    return '/client-portal/dashboard';
+  };
+
   // Redirect if already logged in
   useEffect(() => {
     if (user && !authLoading) {
-      navigate('/client-portal/dashboard', { replace: true });
+      navigate(getDashboardPath(user.role), { replace: true });
     }
   }, [user, authLoading, navigate]);
 
