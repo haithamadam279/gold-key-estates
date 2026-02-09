@@ -11,7 +11,10 @@ import {
   LogOut,
   ArrowLeftRight,
   Phone,
+  Sun,
+  Moon,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { NavigationItem, NavigationCTA } from '@/hooks/useNavigation';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -37,6 +40,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
   const { user, signOut, isAuthenticated } = useApiAuth();
   const { isAdmin } = useUserRole();
   const { ids: compareIds } = useCompare();
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -254,6 +258,17 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                   العربية
                 </Button>
               </div>
+
+              {/* Theme Toggle */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="w-full border-border/50 gap-2"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </Button>
 
               {/* Sign Out */}
               {isAuthenticated && user && (

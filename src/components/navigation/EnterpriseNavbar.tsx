@@ -9,7 +9,10 @@ import {
   LogOut,
   ChevronDown,
   ArrowLeftRight,
+  Sun,
+  Moon,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -36,6 +39,7 @@ export const EnterpriseNavbar = () => {
   const { user, signOut, isLoading: authLoading, isAuthenticated } = useApiAuth();
   const { isAdmin, isLoading: roleLoading } = useUserRole();
   const { ids: compareIds } = useCompare();
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { navigation, getLabel, isLoading: navLoading } = useNavigation();
@@ -174,6 +178,17 @@ export const EnterpriseNavbar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+
+                {/* Theme Toggle */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-muted-foreground hover:text-foreground hidden sm:flex"
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </Button>
 
                 {/* User Menu */}
                 {isAuthBusy ? (
