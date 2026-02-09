@@ -105,7 +105,7 @@ export const EnterpriseNavbar = () => {
   return (
     <>
       {/* Fixed height placeholder to prevent CLS */}
-      <div className="h-[80px]" aria-hidden="true" />
+      <div className="h-[72px] md:h-[88px]" aria-hidden="true" />
       
       <nav
         ref={navRef}
