@@ -238,8 +238,8 @@ const Index = () => {
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-8 h-8 text-primary" />
                 </div>
-                <p className="text-3xl font-display font-semibold text-foreground mb-1">
-                  {stat.value}
+                <p className="text-3xl font-display font-semibold text-foreground mb-1 tabular-nums">
+                  <CountUpStat value={stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="text-muted-foreground">{stat.label}</p>
               </motion.div>
