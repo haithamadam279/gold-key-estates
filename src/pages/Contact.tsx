@@ -243,12 +243,12 @@ const Contact = () => {
                 transition={{ delay: 0.7 }}
                 className="glass-card p-2 aspect-video rounded-2xl overflow-hidden"
               >
-                <div className="w-full h-full bg-secondary/30 rounded-xl flex items-center justify-center">
+                <a href="https://share.google/Fsk04K9YlO2ZuQpu9" target="_blank" rel="noopener noreferrer" className="w-full h-full bg-secondary/30 rounded-xl flex items-center justify-center hover:bg-secondary/50 transition-colors cursor-pointer">
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                    <p className="text-muted-foreground">Interactive Map</p>
+                    <p className="text-muted-foreground">View on Google Maps</p>
                   </div>
-                </div>
+                </a>
               </motion.div>
             </motion.div>
           </div>
