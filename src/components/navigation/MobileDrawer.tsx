@@ -267,7 +267,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                 className="w-full border-border/50 gap-2"
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                {theme === 'dark' ? t('common.lightMode') : t('common.darkMode')}
               </Button>
 
               {/* Sign Out */}
