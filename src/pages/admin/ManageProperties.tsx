@@ -395,6 +395,17 @@ const ManageProperties = () => {
                 </Select>
               </div>
 
+              <div>
+                <Label>Price Delta (%)</Label>
+                <Input
+                  type="number"
+                  value={formData.price_delta_percent}
+                  onChange={(e) => setFormData({ ...formData, price_delta_percent: e.target.value })}
+                  placeholder="e.g. 5 or -3"
+                  className="input-luxury mt-1"
+                />
+              </div>
+
               <div className="md:col-span-2">
                 <Label>Construction Progress: {formData.progress_percent}%</Label>
                 <Slider
