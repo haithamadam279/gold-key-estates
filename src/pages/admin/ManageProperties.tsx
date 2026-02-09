@@ -52,6 +52,7 @@ interface Property {
   progress_percent: number | null;
   assigned_user_id: string | null;
   created_at: string;
+  price_delta_percent: number | null;
   assignedUser?: { full_name: string | null; email: string | null } | null;
 }
 
