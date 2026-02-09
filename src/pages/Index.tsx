@@ -106,12 +106,28 @@ const leadSchema = z.object({
 const Index = () => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hero, setHero] = useState<HeroContent>(defaultHeroContent);
   const [leadForm, setLeadForm] = useState({
     name: '',
     email: '',
     phone: '',
     message: '',
   });
+
+  useEffect(() => {
+    supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'cms_home_hero')
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.value) {
+          try {
+            setHero({ ...defaultHeroContent, ...JSON.parse(data.value) });
+          } catch { /* keep defaults */ }
+        }
+      });
+  }, []);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
