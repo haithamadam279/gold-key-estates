@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,7 @@ const loginSchema = z.object({
 });
 
 const Auth = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -62,9 +64,9 @@ const Auth = () => {
     setIsLoading(false);
 
     if (error) {
-      toast.error('Login failed. Please check your credentials.');
+      toast.error(t('common.error'));
     } else {
-      toast.success('Welcome back!');
+      toast.success(t('auth.welcome') + '!');
       // Role will be resolved by useEffect redirect after auth state updates
     }
   };
@@ -144,10 +146,10 @@ const Auth = () => {
             transition={{ delay: 0.3 }}
           >
             <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-2">
-              Welcome Back
+              {t('auth.welcome')}
             </h1>
             <p className="text-muted-foreground">
-              Sign in to access your client portal
+              {t('auth.welcomeSubtitle')}
             </p>
           </motion.div>
 
@@ -161,14 +163,14 @@ const Auth = () => {
           >
             <div className="space-y-2">
               <Label htmlFor="email" className="text-foreground">
-                Email Address
+                {t('auth.emailAddress')}
               </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder={t('auth.enterEmail')}
                 className="input-luxury h-12"
                 disabled={isLoading}
               />
@@ -179,7 +181,7 @@ const Auth = () => {
 
             <div className="space-y-2">
               <Label htmlFor="password" className="text-foreground">
-                Password
+                {t('auth.password')}
               </Label>
               <div className="relative">
                 <Input
@@ -187,7 +189,7 @@ const Auth = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t('auth.password')}
                   className="input-luxury h-12 pr-12"
                   disabled={isLoading}
                 />
@@ -213,7 +215,7 @@ const Auth = () => {
                   className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
                 <Label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer">
-                  Remember me
+                  {t('auth.rememberMe')}
                 </Label>
               </div>
               <button
@@ -221,7 +223,7 @@ const Auth = () => {
                 className="text-sm text-primary hover:text-primary/80 transition-colors"
                 onClick={() => setShowForgotPassword(true)}
               >
-                Forgot password?
+                {t('auth.forgotPassword')}
               </button>
             </div>
 
@@ -238,10 +240,10 @@ const Auth = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Signing in...
+                  {t('auth.signingIn')}
                 </>
               ) : (
-                'Sign In'
+                t('auth.login')
               )}
             </Button>
           </motion.form>
@@ -254,11 +256,9 @@ const Auth = () => {
             transition={{ delay: 0.5 }}
           >
             <p className="text-sm text-muted-foreground">
-              This portal is for registered clients only.
+              {t('auth.clientsOnly')}
               <br />
-              <span className="text-muted-foreground/70">
-                Contact your administrator for access.
-              </span>
+              <span className="text-muted-foreground/70">{t('auth.contactAdmin')}</span>
             </p>
           </motion.div>
         </div>
@@ -270,7 +270,7 @@ const Auth = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          © {new Date().getFullYear()} Source. All rights reserved.
+          © {new Date().getFullYear()} Source. {t('footer.rights')}.
         </motion.p>
       </motion.div>
     </div>
