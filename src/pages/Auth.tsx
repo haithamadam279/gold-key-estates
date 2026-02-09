@@ -65,7 +65,7 @@ const Auth = () => {
       toast.error('Login failed. Please check your credentials.');
     } else {
       toast.success('Welcome back!');
-      navigate('/client-portal/dashboard', { replace: true });
+      // Role will be resolved by useEffect redirect after auth state updates
     }
   };
 
