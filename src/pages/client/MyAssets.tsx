@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import PriceDeltaIndicator from '@/components/property/PriceDeltaIndicator';
+import LivePhotosGallery from '@/components/property/LivePhotosGallery';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Property {
