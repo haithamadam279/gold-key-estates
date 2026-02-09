@@ -17,6 +17,7 @@ import {
   UserCircle,
   Menu,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { UserRole } from '@/lib/api/types';
