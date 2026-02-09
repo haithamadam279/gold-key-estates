@@ -199,6 +199,8 @@ const Contact = () => {
                     {info.link ? (
                       <a
                         href={info.link}
+                        target={(info as any).external ? '_blank' : undefined}
+                        rel={(info as any).external ? 'noopener noreferrer' : undefined}
                         className="text-muted-foreground hover:text-primary transition-colors"
                       >
                         {info.value}
