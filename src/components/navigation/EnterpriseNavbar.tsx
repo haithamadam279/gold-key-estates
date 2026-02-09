@@ -9,7 +9,10 @@ import {
   LogOut,
   ChevronDown,
   ArrowLeftRight,
+  Sun,
+  Moon,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
