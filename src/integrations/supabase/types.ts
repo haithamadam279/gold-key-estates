@@ -54,35 +54,71 @@ export type Database = {
       }
       leads: {
         Row: {
+          agent_name: string | null
+          area_sqm: number | null
+          assigned_agent_id: string | null
+          assigned_by: string | null
+          budget_max: number | null
+          budget_min: number | null
+          city: string | null
           created_at: string
+          district: string | null
           email: string
           id: string
+          is_converted: boolean | null
           message: string | null
           name: string
+          payment_preference: string | null
           phone: string | null
           property_id: string | null
+          property_type: string | null
+          source: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          agent_name?: string | null
+          area_sqm?: number | null
+          assigned_agent_id?: string | null
+          assigned_by?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          city?: string | null
           created_at?: string
+          district?: string | null
           email: string
           id?: string
+          is_converted?: boolean | null
           message?: string | null
           name: string
+          payment_preference?: string | null
           phone?: string | null
           property_id?: string | null
+          property_type?: string | null
+          source?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          agent_name?: string | null
+          area_sqm?: number | null
+          assigned_agent_id?: string | null
+          assigned_by?: string | null
+          budget_max?: number | null
+          budget_min?: number | null
+          city?: string | null
           created_at?: string
+          district?: string | null
           email?: string
           id?: string
+          is_converted?: boolean | null
           message?: string | null
           name?: string
+          payment_preference?: string | null
           phone?: string | null
           property_id?: string | null
+          property_type?: string | null
+          source?: string | null
           status?: string
           updated_at?: string
         }
@@ -96,8 +132,140 @@ export type Database = {
           },
         ]
       }
+      navigation_cta: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id: string
+          updated_at?: string
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navigation_cta_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_menus"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      navigation_items: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          is_mega_menu: boolean
+          is_visible: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          open_in_new_tab: boolean
+          parent_id: string | null
+          roles_allowed: string[] | null
+          sort_order: number
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_mega_menu?: boolean
+          is_visible?: boolean
+          label_ar: string
+          label_en: string
+          menu_id: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          roles_allowed?: string[] | null
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_mega_menu?: boolean
+          is_visible?: boolean
+          label_ar?: string
+          label_en?: string
+          menu_id?: string
+          open_in_new_tab?: boolean
+          parent_id?: string | null
+          roles_allowed?: string[] | null
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navigation_items_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_menus"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "navigation_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      navigation_menus: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          assigned_agent_id: string | null
           avatar_url: string | null
           created_at: string
           email: string | null
@@ -108,6 +276,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          assigned_agent_id?: string | null
           avatar_url?: string | null
           created_at?: string
           email?: string | null
@@ -118,6 +287,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          assigned_agent_id?: string | null
           avatar_url?: string | null
           created_at?: string
           email?: string | null
@@ -143,6 +313,7 @@ export type Database = {
           location: string | null
           price: number | null
           progress_percent: number | null
+          progress_status: string | null
           status: string
           title: string
           updated_at: string
@@ -160,6 +331,7 @@ export type Database = {
           location?: string | null
           price?: number | null
           progress_percent?: number | null
+          progress_status?: string | null
           status?: string
           title: string
           updated_at?: string
@@ -177,6 +349,7 @@ export type Database = {
           location?: string | null
           price?: number | null
           progress_percent?: number | null
+          progress_status?: string | null
           status?: string
           title?: string
           updated_at?: string
@@ -271,6 +444,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_property_progress: { Args: { status: string }; Returns: number }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
@@ -284,7 +458,16 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "client"
+      app_role:
+        | "admin"
+        | "client"
+        | "sales_agent"
+        | "sales_manager"
+        | "marketer"
+      property_progress_status:
+        | "off_plan"
+        | "ready_to_deliver"
+        | "ready_to_live"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -412,7 +595,12 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "client"],
+      app_role: ["admin", "client", "sales_agent", "sales_manager", "marketer"],
+      property_progress_status: [
+        "off_plan",
+        "ready_to_deliver",
+        "ready_to_live",
+      ],
     },
   },
 } as const

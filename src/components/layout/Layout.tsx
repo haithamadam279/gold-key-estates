@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import Navbar from './Navbar';
+import EnterpriseNavbar from '@/components/navigation/EnterpriseNavbar';
 import Footer from './Footer';
 
 interface LayoutProps {
@@ -10,8 +10,8 @@ interface LayoutProps {
 const Layout = ({ children, showFooter = true }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1 pt-24">
+      <EnterpriseNavbar />
+      <main className="flex-1">
         {children}
       </main>
       {showFooter && <Footer />}
