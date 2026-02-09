@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -14,6 +14,30 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import sourceLogo from '@/assets/source-logo.svg';
+import { useCountUp } from '@/hooks/useCountUp';
+
+const CountUpStat = ({ value, suffix }: { value: number; suffix: string }) => {
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  const count = useCountUp(value, 1800, 0, inView);
+
+  return (
+    <span
+      ref={(el) => {
+        if (el && !ref.current) {
+          ref.current = el;
+          const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+            { threshold: 0.3 }
+          );
+          observer.observe(el);
+        }
+      }}
+    >
+      {count.toLocaleString()}{suffix}
+    </span>
+  );
+};
 
 // Sample featured properties
 const featuredProperties = [
@@ -71,10 +95,10 @@ const featuredProperties = [
 
 // Stats
 const stats = [
-  { icon: Building2, value: '500+', label: 'Properties' },
-  { icon: Users, value: '2,000+', label: 'Happy Clients' },
-  { icon: Award, value: '15+', label: 'Years Experience' },
-  { icon: TrendingUp, value: '98%', label: 'Satisfaction Rate' },
+  { icon: Building2, value: 500, suffix: '+', label: 'Properties' },
+  { icon: Users, value: 2421, suffix: '+', label: 'Happy Clients' },
+  { icon: Award, value: 15, suffix: '+', label: 'Years Experience' },
+  { icon: TrendingUp, value: 98, suffix: '%', label: 'Satisfaction Rate' },
 ];
 
 const leadSchema = z.object({
@@ -214,8 +238,8 @@ const Index = () => {
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-8 h-8 text-primary" />
                 </div>
-                <p className="text-3xl font-display font-semibold text-foreground mb-1">
-                  {stat.value}
+                <p className="text-3xl font-display font-semibold text-foreground mb-1 tabular-nums">
+                  <CountUpStat value={stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="text-muted-foreground">{stat.label}</p>
               </motion.div>
