@@ -211,11 +211,8 @@ export const ApiAuthProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return false;
     const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
     
-    // Super admin has all permissions
-    if (user.role === 'super_admin') return true;
-    
-    // Admin has most permissions except super_admin
-    if (user.role === 'admin' && !roles.includes('super_admin')) return true;
+    // Admin has all permissions
+    if (user.role === 'admin') return true;
     
     return roles.includes(user.role);
   };
@@ -231,8 +228,8 @@ export const ApiAuthProvider = ({ children }: { children: ReactNode }) => {
     signOut,
     updateProfile,
     hasRole,
-    isAdmin: user?.role === 'admin' || user?.role === 'super_admin',
-    isAgent: user?.role === 'agent' || user?.role === 'sales_agent',
+    isAdmin: user?.role === 'admin',
+    isAgent: user?.role === 'sales_agent',
     isClient: user?.role === 'client',
   };
 
