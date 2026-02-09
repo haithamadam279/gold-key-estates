@@ -1,6 +1,6 @@
 /**
  * Admin - Manage Leads
- * Lead pipeline management with notes
+ * Lead pipeline management — reads from real Supabase leads table
  */
 
 import { useState, useEffect } from 'react';
@@ -9,11 +9,11 @@ import {
   Users,
   Phone,
   Mail,
-  MessageSquare,
   Filter,
   Search,
   ChevronRight,
   Building2,
+  Loader2,
 } from 'lucide-react';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,8 +33,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
-import { Lead, LeadStatus, mockLeadsApi } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+
+type LeadStatus = 'new' | 'contacted' | 'qualified' | 'won' | 'lost';
+
+interface Lead {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  message: string | null;
+  source: string | null;
+  status: string;
+  created_at: string;
+  property_id: string | null;
+}
 
 const statusConfig: Record<LeadStatus, { label: string; color: string }> = {
   new: { label: 'New', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
@@ -45,50 +59,51 @@ const statusConfig: Record<LeadStatus, { label: string; color: string }> = {
 };
 
 const ManageLeads = () => {
-  const { toast } = useToast();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<LeadStatus | 'all'>('all');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
-  useEffect(() => {
-    fetchLeads();
-  }, []);
-
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const data = await mockLeadsApi.list();
-      setLeads(data);
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch leads',
-        variant: 'destructive',
-      });
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setLeads(data || []);
+    } catch (err) {
+      console.error('Error fetching leads:', err);
+      toast.error('Failed to fetch leads');
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
   const updateLeadStatus = async (leadId: string, status: LeadStatus) => {
     try {
-      const updated = await mockLeadsApi.updateStatus(leadId, status);
-      setLeads(leads.map((l) => (l.id === leadId ? updated : l)));
+      const { error } = await supabase
+        .from('leads')
+        .update({ status })
+        .eq('id', leadId);
+
+      if (error) throw error;
+
+      setLeads(leads.map((l) => (l.id === leadId ? { ...l, status } : l)));
       if (selectedLead?.id === leadId) {
-        setSelectedLead(updated);
+        setSelectedLead({ ...selectedLead, status });
       }
-      toast({
-        title: 'Success',
-        description: 'Lead status updated',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to update lead status',
-        variant: 'destructive',
-      });
+      toast.success('Lead status updated');
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to update lead status');
     }
   };
 
@@ -102,6 +117,12 @@ const ManageLeads = () => {
 
   const getLeadsByStatus = (status: LeadStatus) =>
     leads.filter((l) => l.status === status).length;
+
+  const getStatusBadge = (status: string) => {
+    const config = statusConfig[status as LeadStatus];
+    if (!config) return <Badge variant="outline">{status}</Badge>;
+    return <Badge className={config.color}>{config.label}</Badge>;
+  };
 
   return (
     <PortalLayout role="admin">
@@ -178,7 +199,9 @@ const ManageLeads = () => {
           </CardHeader>
           <CardContent>
             {loading ? (
-              <div className="text-center py-8 text-muted-foreground">Loading...</div>
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
             ) : filteredLeads.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">No leads found</div>
             ) : (
@@ -214,15 +237,12 @@ const ManageLeads = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      {lead.propertyTitle && (
-                        <Badge variant="outline" className="border-border/50">
-                          <Building2 className="w-3 h-3 mr-1" />
-                          {lead.propertyTitle}
+                      {lead.source && (
+                        <Badge variant="outline" className="border-border/50 text-xs hidden sm:inline-flex">
+                          {lead.source}
                         </Badge>
                       )}
-                      <Badge className={statusConfig[lead.status].color}>
-                        {statusConfig[lead.status].label}
-                      </Badge>
+                      {getStatusBadge(lead.status)}
                       <ChevronRight className="w-4 h-4 text-muted-foreground" />
                     </div>
                   </motion.div>
@@ -260,8 +280,14 @@ const ManageLeads = () => {
                   <div>
                     <p className="text-sm text-muted-foreground">Source</p>
                     <Badge variant="outline" className="border-border/50 mt-1">
-                      {selectedLead.source}
+                      {selectedLead.source || 'Unknown'}
                     </Badge>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Date</p>
+                    <p className="font-medium text-foreground">
+                      {new Date(selectedLead.created_at).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
 
@@ -270,7 +296,7 @@ const ManageLeads = () => {
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Message</p>
                     <div className="p-3 rounded-lg bg-secondary/50 border border-border/30">
-                      <p className="text-foreground">{selectedLead.message}</p>
+                      <p className="text-foreground text-sm whitespace-pre-wrap">{selectedLead.message}</p>
                     </div>
                   </div>
                 )}
@@ -296,31 +322,6 @@ const ManageLeads = () => {
                     ))}
                   </div>
                 </div>
-
-                {/* Notes */}
-                {selectedLead.notes && selectedLead.notes.length > 0 && (
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">Notes</p>
-                    <div className="space-y-2">
-                      {selectedLead.notes.map((note) => (
-                        <div
-                          key={note.id}
-                          className="p-3 rounded-lg bg-secondary/30 border border-border/30"
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-medium text-foreground">
-                              {note.authorName}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(note.createdAt).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <p className="text-sm text-muted-foreground">{note.content}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </DialogContent>
