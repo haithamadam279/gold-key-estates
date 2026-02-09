@@ -157,6 +157,53 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory: {
+        Row: {
+          available_units: number
+          created_at: string
+          id: string
+          last_synced_at: string | null
+          property_id: string
+          reserved_units: number
+          sold_units: number
+          sync_source: string | null
+          total_units: number
+          updated_at: string
+        }
+        Insert: {
+          available_units?: number
+          created_at?: string
+          id?: string
+          last_synced_at?: string | null
+          property_id: string
+          reserved_units?: number
+          sold_units?: number
+          sync_source?: string | null
+          total_units?: number
+          updated_at?: string
+        }
+        Update: {
+          available_units?: number
+          created_at?: string
+          id?: string
+          last_synced_at?: string | null
+          property_id?: string
+          reserved_units?: number
+          sold_units?: number
+          sync_source?: string | null
+          total_units?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           agent_name: string | null
