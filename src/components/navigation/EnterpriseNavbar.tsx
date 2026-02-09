@@ -87,29 +87,15 @@ export const EnterpriseNavbar = () => {
   const portalPath = isAdmin ? '/admin/dashboard' : '/client-portal/dashboard';
   const isAuthBusy = authLoading || roleLoading;
 
-  // Check if on search pages to show integrated quick search
-  const isSearchPage = location.pathname === '/properties' || location.pathname === '/projects';
+  // Fixed navigation items (not CMS-driven)
+  const fixedNavItems = [
+    { id: 'home', label: 'Home', url: '/' },
+    { id: 'properties', label: 'Properties', url: '/properties' },
+    { id: 'search', label: 'Search', url: '/find-property' },
+    { id: 'contact', label: 'Contact', url: '/contact' },
+    { id: 'about', label: 'About', url: '/about' },
+  ];
 
-  // Filter navigation items by role
-  const filterItemsByRole = (items: NavigationItem[]): NavigationItem[] => {
-    return items.filter(item => {
-      // If roles_allowed is empty, it's public
-      if (!item.roles_allowed || item.roles_allowed.length === 0) {
-        return true;
-      }
-      // Check if user has required role
-      if (!isAuthenticated) return false;
-      // Admin can see everything
-      if (isAdmin) return true;
-      // Check specific roles
-      return item.roles_allowed.some(role => {
-        // This would need to be extended based on your role system
-        return true; // Placeholder - filter by actual user role
-      });
-    });
-  };
-
-  const navItems = navigation?.items ? filterItemsByRole(navigation.items) : [];
   const cta = navigation?.cta;
 
   return (
