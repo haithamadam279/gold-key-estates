@@ -17,6 +17,7 @@ import {
   UserCircle,
   Menu,
   X,
+  Sparkles,
 } from 'lucide-react';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { UserRole } from '@/lib/api/types';
@@ -46,6 +47,7 @@ const adminNavItems = [
   { path: '/admin/leads', label: 'Leads', icon: MessageSquare },
   { path: '/admin/documents', label: 'Documents', icon: FileText },
   { path: '/admin/resale', label: 'Resale Requests', icon: RefreshCw },
+  { path: '/admin/recommendations', label: 'Recommendations', icon: Sparkles },
   { path: '/admin/cms', label: 'CMS', icon: Layers },
   { path: '/admin/settings', label: 'Settings', icon: Settings },
 ];

@@ -5,6 +5,7 @@ import PortalLayout from '@/components/portal/PortalLayout';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ContactAgentButton } from '@/components/client/ContactAgentButton';
+import RecommendationsWidget from '@/components/client/RecommendationsWidget';
 import { cn } from '@/lib/utils';
 
 const dashboardActions = [
@@ -190,12 +191,15 @@ const ClientDashboard = () => {
         </motion.div>
       </div>
 
+      {/* Recommendations */}
+      <RecommendationsWidget />
+
       {/* Quick Overview Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.4 }}
-        className="mt-8"
+        transition={{ duration: 0.4, delay: 0.6 }}
+        className="mt-6"
       >
         <div className="glass-card p-6 border border-border/20 rounded-xl">
           <h2 className="font-display text-xl font-semibold text-foreground mb-3">

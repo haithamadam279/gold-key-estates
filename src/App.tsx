@@ -47,6 +47,7 @@ const ManageInventory = lazy(() => import("./pages/admin/ManageInventory"));
 const ManageLeads = lazy(() => import("./pages/admin/ManageLeads"));
 const ManageCMS = lazy(() => import("./pages/admin/ManageCMS"));
 const GoogleSyncSettings = lazy(() => import("./pages/admin/GoogleSyncSettings"));
+const ManageRecommendations = lazy(() => import("./pages/admin/ManageRecommendations"));
 
 // Agent Pages (lazy loaded)
 const AgentDashboard = lazy(() => import("./pages/agent/Dashboard"));
@@ -250,6 +251,16 @@ const AppContent = () => {
             <ProtectedRoute requiredRole={['admin', 'super_admin']}>
               <Suspense fallback={null}>
                 <AdminSettings />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/recommendations"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <ManageRecommendations />
               </Suspense>
             </ProtectedRoute>
           }
