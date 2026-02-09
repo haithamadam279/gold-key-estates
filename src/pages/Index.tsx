@@ -126,6 +126,7 @@ const Index = () => {
 
   return (
     <Layout>
+      <FirstVisitLeadPopup />
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Gradient */}
