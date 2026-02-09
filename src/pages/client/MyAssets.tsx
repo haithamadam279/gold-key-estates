@@ -73,6 +73,16 @@ const MyAssets = () => {
     }
   };
 
+  const filteredProperties = useMemo(() => {
+    if (!searchQuery.trim()) return properties;
+    const q = searchQuery.toLowerCase();
+    return properties.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        (p.location && p.location.toLowerCase().includes(q))
+    );
+  }, [properties, searchQuery]);
+
   if (isLoading) {
     return (
       <PortalLayout title="My Assets" subtitle="View your property portfolio">
@@ -92,7 +102,19 @@ const MyAssets = () => {
         </div>
       )}
 
-      {properties.length === 0 ? (
+      {properties.length > 0 && (
+        <div className="relative mb-6">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name or location..."
+            className="input-luxury pl-12"
+          />
+        </div>
+      )}
+
+      {filteredProperties.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
