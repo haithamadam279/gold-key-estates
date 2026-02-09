@@ -119,7 +119,7 @@ export const EnterpriseNavbar = () => {
             : "glass-card"
         )}>
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex items-center justify-between h-14">
+            <div className="flex items-center justify-between h-16">
               {/* Left: Logo */}
               <Link to="/" className="flex-shrink-0">
                 <motion.img
