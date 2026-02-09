@@ -25,15 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useApiAuth } from '@/contexts/ApiAuthContext';
-import {
-  mockUsersApi,
-  mockPropertiesApi,
-  mockInventoryApi,
-  mockLeadsApi,
-  mockResaleApi,
-  PropertyListItem,
-  Lead,
-} from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DashboardStats {
   totalUsers: number;
