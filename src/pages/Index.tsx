@@ -14,6 +14,30 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import sourceLogo from '@/assets/source-logo.svg';
+import { useCountUp } from '@/hooks/useCountUp';
+
+const CountUpStat = ({ value, suffix }: { value: number; suffix: string }) => {
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  const count = useCountUp(value, 1800, 0, inView);
+
+  return (
+    <span
+      ref={(el) => {
+        if (el && !ref.current) {
+          ref.current = el;
+          const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+            { threshold: 0.3 }
+          );
+          observer.observe(el);
+        }
+      }}
+    >
+      {count.toLocaleString()}{suffix}
+    </span>
+  );
+};
 
 // Sample featured properties
 const featuredProperties = [
