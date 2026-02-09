@@ -259,6 +259,17 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                 </Button>
               </div>
 
+              {/* Theme Toggle */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="w-full border-border/50 gap-2"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </Button>
+
               {/* Sign Out */}
               {isAuthenticated && user && (
                 <Button
