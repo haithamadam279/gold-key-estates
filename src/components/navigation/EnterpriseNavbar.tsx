@@ -209,14 +209,6 @@ export const EnterpriseNavbar = () => {
                   </Link>
                 )}
 
-                {/* CTA Button (Desktop) */}
-                {cta?.is_visible && (
-                  <Link to={cta.url} className="hidden lg:block">
-                    <Button className="btn-gold">
-                      {getLabel(cta)}
-                    </Button>
-                  </Link>
-                )}
 
                 {/* Mobile Menu Button */}
                 <Button
