@@ -127,7 +127,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                 <Link to={portalPath} onClick={onClose}>
                   <Button variant="outline" className="w-full border-border/50">
                     <User className="w-4 h-4 mr-2" />
-                    {isAdmin ? 'Admin Dashboard' : 'My Portal'}
+                    {isAdmin ? t('nav.adminDashboard') : t('nav.myPortal')}
                   </Button>
                 </Link>
               ) : (
@@ -267,7 +267,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                 className="w-full border-border/50 gap-2"
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                {theme === 'dark' ? t('common.lightMode') : t('common.darkMode')}
               </Button>
 
               {/* Sign Out */}
@@ -278,7 +278,7 @@ export const MobileDrawer = ({ isOpen, onClose, items, cta, getLabel }: MobileDr
                   className="w-full text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
+                  {t('nav.signOut')}
                 </Button>
               )}
             </div>

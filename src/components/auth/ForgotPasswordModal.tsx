@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -22,6 +23,7 @@ interface ForgotPasswordModalProps {
 }
 
 const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -50,11 +52,11 @@ const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) =
       }
 
       setIsSuccess(true);
-      toast.success('Password reset email sent!');
+      toast.success(t('auth.resetEmailSent'));
     } catch (err) {
       console.error('Password reset error:', err);
-      setError('Failed to send reset email. Please try again.');
-      toast.error('Failed to send reset email');
+      setError(t('common.error'));
+      toast.error(t('common.error'));
     } finally {
       setIsLoading(false);
     }
@@ -72,12 +74,10 @@ const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) =
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-xl">
-            {isSuccess ? 'Check Your Email' : 'Reset Password'}
+            {isSuccess ? t('auth.checkEmail') : t('auth.resetPassword')}
           </DialogTitle>
           <DialogDescription>
-            {isSuccess
-              ? 'We sent you a password reset link. Please check your inbox.'
-              : 'Enter your email address and we\'ll send you a link to reset your password.'}
+            {isSuccess ? t('auth.resetEmailSent') : t('auth.resetEmailDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -87,16 +87,16 @@ const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) =
               <CheckCircle className="w-8 h-8 text-primary" />
             </div>
             <p className="text-sm text-muted-foreground text-center">
-              If an account exists for <strong>{email}</strong>, you'll receive a reset link shortly.
+              {t('auth.accountExists')} <strong>{email}</strong>, {t('auth.receiveLink')}
             </p>
             <Button onClick={handleClose} className="w-full">
-              Back to Sign In
+              {t('auth.backToSignIn')}
             </Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="reset-email">Email Address</Label>
+              <Label htmlFor="reset-email">{t('auth.emailAddress')}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -104,7 +104,7 @@ const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) =
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t('auth.enterEmail')}
                   className="pl-10"
                   disabled={isLoading}
                   autoFocus
@@ -114,23 +114,17 @@ const ForgotPasswordModal = ({ open, onOpenChange }: ForgotPasswordModalProps) =
             </div>
 
             <div className="flex gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                className="flex-1"
-                disabled={isLoading}
-              >
-                Cancel
+              <Button type="button" variant="outline" onClick={handleClose} className="flex-1" disabled={isLoading}>
+                {t('common.cancel')}
               </Button>
               <Button type="submit" className="flex-1" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
+                    {t('auth.sending')}
                   </>
                 ) : (
-                  'Send Reset Link'
+                  t('auth.sendResetLink')
                 )}
               </Button>
             </div>

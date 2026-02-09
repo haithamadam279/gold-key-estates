@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import NotificationBell from '@/components/portal/NotificationBell';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -67,6 +68,7 @@ const roleLabels: Record<UserRole, string> = {
 };
 
 const PortalLayout = ({ children, title, subtitle, role }: PortalLayoutProps) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut, user, isAdmin, isAgent } = useApiAuth();
@@ -194,7 +196,7 @@ const PortalLayout = ({ children, title, subtitle, role }: PortalLayoutProps) =>
                   className="text-muted-foreground hover:text-foreground gap-2"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span className="hidden sm:inline">Sign Out</span>
+                  <span className="hidden sm:inline">{t('nav.signOut')}</span>
                 </Button>
               </div>
             </div>

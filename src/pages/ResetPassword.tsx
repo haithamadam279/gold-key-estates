@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ const passwordSchema = z
   .regex(/[0-9]/, { message: 'Password must contain at least one number' });
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -28,9 +30,7 @@ const ResetPassword = () => {
   const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
   const navigate = useNavigate();
 
-  // Listen for recovery session from Supabase auth
   useEffect(() => {
-    // Listen for PASSWORD_RECOVERY event (handles both PKCE and hash-based flows)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') {
         if (session) {
@@ -39,12 +39,10 @@ const ResetPassword = () => {
       }
     });
 
-    // Also check if session already exists (e.g. user navigated here while logged in)
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         setIsValidSession(true);
       } else {
-        // Give onAuthStateChange a moment to fire (hash/PKCE processing)
         setTimeout(() => {
           setIsValidSession((prev) => prev === null ? false : prev);
         }, 2000);
@@ -58,16 +56,14 @@ const ResetPassword = () => {
     e.preventDefault();
     setErrors({});
 
-    // Validate password
     const passwordResult = passwordSchema.safeParse(password);
     if (!passwordResult.success) {
       setErrors({ password: passwordResult.error.errors[0].message });
       return;
     }
 
-    // Check passwords match
     if (password !== confirmPassword) {
-      setErrors({ confirmPassword: 'Passwords do not match' });
+      setErrors({ confirmPassword: t('auth.confirmPassword') });
       return;
     }
 
@@ -75,28 +71,23 @@ const ResetPassword = () => {
 
     try {
       const { error } = await supabase.auth.updateUser({ password });
-
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       setIsSuccess(true);
-      toast.success('Password updated successfully!');
+      toast.success(t('auth.passwordUpdated'));
       
-      // Sign out and redirect to login after delay
       setTimeout(async () => {
         await supabase.auth.signOut();
         navigate('/auth', { replace: true });
       }, 3000);
     } catch (err) {
       console.error('Password update error:', err);
-      toast.error('Failed to update password. Please try again.');
+      toast.error(t('common.error'));
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Loading state while checking session
   if (isValidSession === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -105,29 +96,23 @@ const ResetPassword = () => {
     );
   }
 
-  // Invalid or expired link
   if (!isValidSession) {
     return (
       <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background" />
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative z-10 w-full max-w-md mx-4"
-        >
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-md mx-4">
           <div className="glass-card p-8 md:p-10 border border-border/30 shadow-2xl text-center">
             <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-destructive/10 flex items-center justify-center">
               <AlertCircle className="w-8 h-8 text-destructive" />
             </div>
             <h1 className="font-display text-2xl font-semibold text-foreground mb-2">
-              Invalid or Expired Link
+              {t('auth.invalidLink')}
             </h1>
             <p className="text-muted-foreground mb-6">
-              This password reset link is invalid or has expired. Please request a new one.
+              {t('auth.invalidLinkDescription')}
             </p>
             <Button onClick={() => navigate('/auth')} className="w-full">
-              Back to Sign In
+              {t('auth.backToSignIn')}
             </Button>
           </div>
         </motion.div>
@@ -137,15 +122,9 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background" />
-      
-      {/* Animated Gradient Orbs */}
       <motion.div
-        animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.15, 0.1]
-        }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute top-1/4 -left-32 w-[500px] h-[500px] rounded-full bg-primary/20 blur-[120px]"
       />
@@ -157,105 +136,73 @@ const ResetPassword = () => {
         className="relative z-10 w-full max-w-md mx-4"
       >
         <div className="glass-card p-8 md:p-10 border border-border/30 shadow-2xl">
-          {/* Logo */}
-          <motion.div 
-            className="flex justify-center mb-8"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <motion.div className="flex justify-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <img src={sourceLogo} alt="Source" className="h-12 w-auto" />
           </motion.div>
 
           {isSuccess ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-6"
-            >
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-6">
               <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
                 <CheckCircle className="w-8 h-8 text-primary" />
               </div>
-              <h2 className="font-display text-xl font-semibold text-foreground mb-2">
-                Password Updated!
-              </h2>
-              <p className="text-muted-foreground">
-                Redirecting you to sign in...
-              </p>
+              <h2 className="font-display text-xl font-semibold text-foreground mb-2">{t('auth.passwordUpdated')}</h2>
+              <p className="text-muted-foreground">{t('auth.redirecting')}</p>
             </motion.div>
           ) : (
             <>
               <div className="text-center mb-8">
-                <h1 className="font-display text-2xl font-semibold text-foreground mb-2">
-                  Set New Password
-                </h1>
-                <p className="text-muted-foreground">
-                  Enter your new password below
-                </p>
+                <h1 className="font-display text-2xl font-semibold text-foreground mb-2">{t('auth.setNewPassword')}</h1>
+                <p className="text-muted-foreground">{t('auth.enterNewPassword')}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="password">New Password</Label>
+                  <Label htmlFor="password">{t('auth.newPassword')}</Label>
                   <div className="relative">
                     <Input
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter new password"
+                      placeholder={t('auth.enterNewPasswordPlaceholder')}
                       className="pr-12"
                       disabled={isLoading}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  {errors.password && (
-                    <p className="text-sm text-destructive">{errors.password}</p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Min 8 characters with uppercase, lowercase, and number
-                  </p>
+                  {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
+                  <p className="text-xs text-muted-foreground">{t('auth.passwordRequirements')}</p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">{t('auth.confirmNewPassword')}</Label>
                   <div className="relative">
                     <Input
                       id="confirmPassword"
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm new password"
+                      placeholder={t('auth.confirmNewPasswordPlaceholder')}
                       className="pr-12"
                       disabled={isLoading}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
+                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
                       {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-sm text-destructive">{errors.confirmPassword}</p>
-                  )}
+                  {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword}</p>}
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Updating...
+                      {t('auth.updating')}
                     </>
                   ) : (
-                    'Update Password'
+                    t('auth.updatePassword')
                   )}
                 </Button>
               </form>

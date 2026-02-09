@@ -93,11 +93,11 @@ export const EnterpriseNavbar = () => {
 
   // Fixed navigation items (not CMS-driven)
   const fixedNavItems = [
-    { id: 'home', label: 'Home', url: '/' },
-    { id: 'properties', label: 'Properties', url: '/properties' },
-    { id: 'search', label: 'Search', url: '/find-property' },
-    { id: 'contact', label: 'Contact', url: '/contact' },
-    { id: 'about', label: 'About', url: '/about' },
+    { id: 'home', label: t('nav.home'), url: '/' },
+    { id: 'properties', label: t('nav.properties'), url: '/properties' },
+    { id: 'search', label: t('nav.search'), url: '/find-property' },
+    { id: 'contact', label: t('nav.contact'), url: '/contact' },
+    { id: 'about', label: t('nav.about'), url: '/about' },
   ];
 
   const cta = navigation?.cta;
@@ -206,7 +206,7 @@ export const EnterpriseNavbar = () => {
                     <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="glass-card border-border/50">
                       <DropdownMenuItem asChild>
                         <Link to={portalPath}>
-                          {isAdmin ? 'Admin Dashboard' : 'My Portal'}
+                          {isAdmin ? t('nav.adminDashboard') : t('nav.myPortal')}
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
