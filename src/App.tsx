@@ -255,6 +255,16 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/recommendations"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'super_admin']}>
+              <Suspense fallback={null}>
+                <ManageRecommendations />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
         
         {/* Language-prefixed routes */}
         <Route path="/en" element={<Navigate to="/" replace />} />
