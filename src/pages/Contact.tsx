@@ -40,20 +40,21 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      value: '+20 123 456 7890',
-      link: 'tel:+201234567890',
+      value: '+20 103 678 6432',
+      link: 'tel:+201036786432',
     },
     {
       icon: Mail,
       title: 'Email',
-      value: 'info@estates.com',
-      link: 'mailto:info@estates.com',
+      value: 'contact@source-eg.com',
+      link: 'mailto:contact@source-eg.com',
     },
     {
       icon: MapPin,
       title: 'Address',
-      value: '123 Luxury Avenue, New Cairo, Egypt',
-      link: 'https://maps.google.com',
+      value: 'Al Thawra Street 107, Cairo, Cairo, Egypt.',
+      link: 'https://share.google/Fsk04K9YlO2ZuQpu9',
+      external: true,
     },
     {
       icon: Clock,
@@ -198,6 +199,8 @@ const Contact = () => {
                     {info.link ? (
                       <a
                         href={info.link}
+                        target={(info as any).external ? '_blank' : undefined}
+                        rel={(info as any).external ? 'noopener noreferrer' : undefined}
                         className="text-muted-foreground hover:text-primary transition-colors"
                       >
                         {info.value}
@@ -225,10 +228,12 @@ const Contact = () => {
                 <p className="text-muted-foreground mb-4">
                   Get instant responses from our sales team on WhatsApp.
                 </p>
-                <Button className="bg-success hover:bg-success/90 text-success-foreground gap-2">
-                  <MessageCircle className="w-5 h-5" />
-                  Chat on WhatsApp
-                </Button>
+                <a href="https://wa.me/201036786432" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-success hover:bg-success/90 text-success-foreground gap-2">
+                    <MessageCircle className="w-5 h-5" />
+                    Call on WhatsApp
+                  </Button>
+                </a>
               </motion.div>
 
               {/* Map Placeholder */}
@@ -238,12 +243,12 @@ const Contact = () => {
                 transition={{ delay: 0.7 }}
                 className="glass-card p-2 aspect-video rounded-2xl overflow-hidden"
               >
-                <div className="w-full h-full bg-secondary/30 rounded-xl flex items-center justify-center">
+                <a href="https://share.google/Fsk04K9YlO2ZuQpu9" target="_blank" rel="noopener noreferrer" className="w-full h-full bg-secondary/30 rounded-xl flex items-center justify-center hover:bg-secondary/50 transition-colors cursor-pointer">
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                    <p className="text-muted-foreground">Interactive Map</p>
+                    <p className="text-muted-foreground">View on Google Maps</p>
                   </div>
-                </div>
+                </a>
               </motion.div>
             </motion.div>
           </div>
