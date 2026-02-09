@@ -72,10 +72,7 @@ const Footer = () => {
     { href: '/auth', label: t('nav.login', 'Login') },
   ];
 
-  const legalLinks = [
-    { href: '/privacy', label: t('footer.privacy', 'Privacy Policy') },
-    { href: '/terms', label: t('footer.terms', 'Terms of Service') },
-  ];
+  const legalLinks: { href: string; label: string }[] = [];
 
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
