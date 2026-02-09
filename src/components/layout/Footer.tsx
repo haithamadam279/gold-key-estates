@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import sourceLogo from '@/assets/source-logo.svg';
+import sourceLogo from '@/assets/logo-b-secondary.svg';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -51,7 +51,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3">
-              <img src={sourceLogo} alt="Source" className="h-12 w-auto" />
+              <img src={sourceLogo} alt="Source" className="h-16 w-auto" />
             </Link>
             <p className="text-muted-foreground leading-relaxed">
               Discover exceptional properties in the most prestigious locations. 
