@@ -87,35 +87,21 @@ export const EnterpriseNavbar = () => {
   const portalPath = isAdmin ? '/admin/dashboard' : '/client-portal/dashboard';
   const isAuthBusy = authLoading || roleLoading;
 
-  // Check if on search pages to show integrated quick search
-  const isSearchPage = location.pathname === '/properties' || location.pathname === '/projects';
+  // Fixed navigation items (not CMS-driven)
+  const fixedNavItems = [
+    { id: 'home', label: 'Home', url: '/' },
+    { id: 'properties', label: 'Properties', url: '/properties' },
+    { id: 'search', label: 'Search', url: '/find-property' },
+    { id: 'contact', label: 'Contact', url: '/contact' },
+    { id: 'about', label: 'About', url: '/about' },
+  ];
 
-  // Filter navigation items by role
-  const filterItemsByRole = (items: NavigationItem[]): NavigationItem[] => {
-    return items.filter(item => {
-      // If roles_allowed is empty, it's public
-      if (!item.roles_allowed || item.roles_allowed.length === 0) {
-        return true;
-      }
-      // Check if user has required role
-      if (!isAuthenticated) return false;
-      // Admin can see everything
-      if (isAdmin) return true;
-      // Check specific roles
-      return item.roles_allowed.some(role => {
-        // This would need to be extended based on your role system
-        return true; // Placeholder - filter by actual user role
-      });
-    });
-  };
-
-  const navItems = navigation?.items ? filterItemsByRole(navigation.items) : [];
   const cta = navigation?.cta;
 
   return (
     <>
       {/* Fixed height placeholder to prevent CLS */}
-      <div className="h-[72px]" aria-hidden="true" />
+      <div className="h-[80px]" aria-hidden="true" />
       
       <nav
         ref={navRef}
@@ -133,13 +119,13 @@ export const EnterpriseNavbar = () => {
             : "glass-card"
         )}>
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex items-center justify-between h-14">
+            <div className="flex items-center justify-between h-16">
               {/* Left: Logo */}
               <Link to="/" className="flex-shrink-0">
                 <motion.img
                   src={sourceLogo}
                   alt="Source"
-                  className="h-9 md:h-10 w-auto"
+                  className="h-12 md:h-14 w-auto"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 />
@@ -147,71 +133,20 @@ export const EnterpriseNavbar = () => {
 
               {/* Center: Desktop Navigation */}
               <div className="hidden lg:flex items-center gap-1">
-                {!navLoading && navItems.map((item) => {
-                  const hasChildren = item.children && item.children.length > 0;
-                  const isCompare = item.label_en === 'Compare';
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="relative"
-                      onMouseEnter={() => hasChildren && handleMouseEnter(item.id)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      {hasChildren && item.is_mega_menu ? (
-                        <button
-                          className={cn(
-                            "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                            openMegaMenu === item.id
-                              ? "text-primary bg-secondary/50"
-                              : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
-                          )}
-                          aria-expanded={openMegaMenu === item.id}
-                          aria-haspopup="true"
-                        >
-                          <DynamicIcon name={item.icon} className="w-4 h-4" />
-                          <span>{getLabel(item)}</span>
-                          <ChevronDown className={cn(
-                            "w-3.5 h-3.5 transition-transform duration-200",
-                            openMegaMenu === item.id ? "rotate-180" : ""
-                          )} />
-                        </button>
-                      ) : (
-                        <Link
-                          to={item.url || '#'}
-                          className={cn(
-                            "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors relative",
-                            location.pathname === item.url
-                              ? "text-primary"
-                              : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
-                          )}
-                        >
-                          {isCompare ? (
-                            <ArrowLeftRight className="w-4 h-4" />
-                          ) : (
-                            <DynamicIcon name={item.icon} className="w-4 h-4" />
-                          )}
-                          <span>{getLabel(item)}</span>
-                          {isCompare && compareIds.length > 0 && (
-                            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
-                              {compareIds.length}
-                            </span>
-                          )}
-                        </Link>
-                      )}
-
-                      {/* Mega Menu */}
-                      {hasChildren && item.is_mega_menu && (
-                        <MegaMenu
-                          item={item}
-                          isOpen={openMegaMenu === item.id}
-                          onClose={() => setOpenMegaMenu(null)}
-                          getLabel={getLabel}
-                        />
-                      )}
-                    </div>
-                  );
-                })}
+                {fixedNavItems.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.url}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                      location.pathname === item.url
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
+                    )}
+                  >
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
               </div>
 
               {/* Right: Actions */}
@@ -300,16 +235,6 @@ export const EnterpriseNavbar = () => {
               </div>
             </div>
 
-            {/* Integrated Quick Search Bar (Search Pages) */}
-            {isSearchPage && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                className="pb-3 hidden md:block"
-              >
-                <QuickSearch variant="expanded" />
-              </motion.div>
-            )}
           </div>
         </div>
       </nav>
@@ -318,7 +243,7 @@ export const EnterpriseNavbar = () => {
       <MobileDrawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        items={navItems}
+        items={fixedNavItems.map(i => ({ id: i.id, menu_id: '', parent_id: null, label_en: i.label, label_ar: i.label, url: i.url, icon: null, sort_order: 0, is_visible: true, is_mega_menu: false, roles_allowed: [], open_in_new_tab: false } as NavigationItem))}
         cta={cta}
         getLabel={getLabel}
       />
