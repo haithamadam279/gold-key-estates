@@ -287,6 +287,34 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Who We Are Section */}
+      <section className="py-24 border-t border-border/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mb-8">
+                Who We Are &amp; Why{' '}
+                <span className="text-gold-gradient">Make It Yours</span>?
+              </h2>
+              <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+                Source is your dedicated partner in luxury real estate — designed to keep you
+                informed, empowered, and in control. From real-time asset tracking and
+                construction progress photos to centralized document management and curated
+                market insights, every detail of your portfolio lives in one elegant platform.
+                We deliver tailored investment opportunities, personalised recommendations, and
+                seamless support for buying and selling — all through direct, white-glove
+                communication with your dedicated team.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Lead Form Section */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-card" />
