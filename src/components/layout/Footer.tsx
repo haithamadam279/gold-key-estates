@@ -72,10 +72,7 @@ const Footer = () => {
     { href: '/auth', label: t('nav.login', 'Login') },
   ];
 
-  const legalLinks = [
-    { href: '/privacy', label: t('footer.privacy', 'Privacy Policy') },
-    { href: '/terms', label: t('footer.terms', 'Terms of Service') },
-  ];
+  const legalLinks: { href: string; label: string }[] = [];
 
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
@@ -199,17 +196,19 @@ const Footer = () => {
           <p className="text-muted-foreground text-sm">
             © {currentYear} Source Egypt. {t('footer.rights', 'All rights reserved')}.
           </p>
-          <div className="flex gap-6">
-            {legalLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="text-muted-foreground text-sm hover:text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+          {legalLinks.length > 0 && (
+            <div className="flex gap-6">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-muted-foreground text-sm hover:text-primary transition-colors duration-200"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>
