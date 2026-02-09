@@ -241,11 +241,16 @@ const ManageRecommendations = () => {
                   <SelectTrigger className="input-luxury mt-1">
                     <SelectValue placeholder="Select client..." />
                   </SelectTrigger>
-                  <SelectContent>
+                    <SelectContent>
                     <SelectItem value="none" disabled>Select client...</SelectItem>
                     {users.map((u) => (
                       <SelectItem key={u.user_id} value={u.user_id}>
-                        {u.full_name || u.email}
+                        <span className="flex flex-col">
+                          <span>{u.full_name || u.email || 'Unknown'}</span>
+                          {u.full_name && u.email && (
+                            <span className="text-xs text-muted-foreground">{u.email}</span>
+                          )}
+                        </span>
                       </SelectItem>
                     ))}
                   </SelectContent>
