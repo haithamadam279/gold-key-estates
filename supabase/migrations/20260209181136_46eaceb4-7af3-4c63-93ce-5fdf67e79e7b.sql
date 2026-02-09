@@ -1,0 +1,1 @@
+ALTER TABLE public.properties ADD COLUMN price_delta_percent numeric DEFAULT NULL;
