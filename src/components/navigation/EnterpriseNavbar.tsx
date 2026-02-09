@@ -39,6 +39,7 @@ export const EnterpriseNavbar = () => {
   const { user, signOut, isLoading: authLoading, isAuthenticated } = useApiAuth();
   const { isAdmin, isLoading: roleLoading } = useUserRole();
   const { ids: compareIds } = useCompare();
+  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { navigation, getLabel, isLoading: navLoading } = useNavigation();
