@@ -8,26 +8,35 @@ import {
   Mail, 
   Phone, 
   MapPin,
-  ArrowRight
+  ArrowRight,
+  MessageCircle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import sourceLogo from '@/assets/logo-b-secondary.svg';
+
+const PHONE_NUMBER = '+201036786432';
+const DISPLAY_PHONE = '+20 103 678 6432';
+const CONTACT_EMAIL = 'contact@source-eg.com';
+const ADDRESS = 'Al Thawra Street 107, Cairo, Cairo, Egypt.';
+const WHATSAPP_URL = `https://wa.me/${PHONE_NUMBER}`;
 
 const Footer = () => {
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
-    { href: '/properties', label: t('footer.properties') },
-    { href: '/projects', label: t('projects.title') },
-    { href: '/about', label: t('footer.about') },
-    { href: '/contact', label: t('footer.contact') },
+    { href: '/', label: t('nav.home', 'Home') },
+    { href: '/properties', label: t('footer.properties', 'Properties') },
+    { href: '/find-property', label: t('nav.search', 'Find Your Property') },
+    { href: '/contact', label: t('footer.contact', 'Contact') },
+    { href: '/about', label: t('footer.about', 'About') },
+    { href: '/auth', label: t('nav.login', 'Login') },
   ];
 
   const legalLinks = [
-    { href: '/privacy', label: t('footer.privacy') },
-    { href: '/terms', label: t('footer.terms') },
+    { href: '/privacy', label: t('footer.privacy', 'Privacy Policy') },
+    { href: '/terms', label: t('footer.terms', 'Terms of Service') },
   ];
 
   const socialLinks = [
@@ -93,20 +102,31 @@ const Footer = () => {
           {/* Contact Info */}
           <div>
             <h4 className="font-display text-lg font-semibold text-foreground mb-6">
-              {t('footer.contact')}
+              {t('footer.contact', 'Contact')}
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-muted-foreground">
                 <MapPin className="w-5 h-5 mt-0.5 text-primary flex-shrink-0" />
-                <span>123 Luxury Avenue, New Cairo, Egypt</span>
+                <span>{ADDRESS}</span>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>+20 123 456 7890</span>
+                <a href={`tel:${PHONE_NUMBER}`} className="hover:text-primary transition-colors">{DISPLAY_PHONE}</a>
               </li>
               <li className="flex items-center gap-3 text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary flex-shrink-0" />
-                <span>info@source-properties.com</span>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-primary transition-colors">{CONTACT_EMAIL}</a>
+              </li>
+              <li className="pt-2">
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[hsl(142,70%,35%)] hover:bg-[hsl(142,70%,30%)] text-white text-sm font-medium transition-colors duration-200"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Call on WhatsApp
+                </a>
               </li>
             </ul>
           </div>
@@ -114,7 +134,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div>
             <h4 className="font-display text-lg font-semibold text-foreground mb-6">
-              {t('footer.newsletter')}
+              {t('footer.newsletter', 'Newsletter')}
             </h4>
             <p className="text-muted-foreground mb-4">
               Stay updated with our latest properties and exclusive offers.
@@ -122,7 +142,7 @@ const Footer = () => {
             <div className="flex gap-2">
               <Input
                 type="email"
-                placeholder={t('footer.newsletterPlaceholder')}
+                placeholder={t('footer.newsletterPlaceholder', 'Your email')}
                 className="input-luxury flex-1"
               />
               <Button className="btn-gold px-4">
@@ -135,7 +155,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {currentYear} Source Egypt. {t('footer.rights')}.
+            © {currentYear} Source Egypt. {t('footer.rights', 'All rights reserved')}.
           </p>
           <div className="flex gap-6">
             {legalLinks.map((link) => (
