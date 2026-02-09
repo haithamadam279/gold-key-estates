@@ -160,6 +160,7 @@ const ManageProperties = () => {
       status: property.status as 'under_construction' | 'delivered',
       progress_percent: property.progress_percent || 0,
       assigned_user_id: property.assigned_user_id || '',
+      price_delta_percent: property.price_delta_percent?.toString() || '',
     });
     setIsDialogOpen(true);
   };
