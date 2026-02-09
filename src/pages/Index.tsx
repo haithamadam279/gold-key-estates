@@ -94,13 +94,7 @@ const featuredProperties = [
   },
 ];
 
-// Stats
-const stats = [
-  { icon: Building2, value: 500, suffix: '+', label: 'Properties' },
-  { icon: Users, value: 2421, suffix: '+', label: 'Happy Clients' },
-  { icon: Award, value: 15, suffix: '+', label: 'Years Experience' },
-  { icon: TrendingUp, value: 98, suffix: '%', label: 'Satisfaction Rate' },
-];
+const statIcons = [Building2, Users, Award, TrendingUp];
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
