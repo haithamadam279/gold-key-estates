@@ -10,6 +10,7 @@ import {
   User,
   Percent
 } from 'lucide-react';
+import PriceDeltaIndicator from '@/components/property/PriceDeltaIndicator';
 import PortalLayout from '@/components/portal/PortalLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,6 +52,7 @@ interface Property {
   progress_percent: number | null;
   assigned_user_id: string | null;
   created_at: string;
+  price_delta_percent: number | null;
   assignedUser?: { full_name: string | null; email: string | null } | null;
 }
 
@@ -82,6 +84,7 @@ const ManageProperties = () => {
     status: 'under_construction' as 'under_construction' | 'delivered',
     progress_percent: 0,
     assigned_user_id: '',
+    price_delta_percent: '',
   });
 
   const fetchData = async () => {
@@ -138,6 +141,7 @@ const ManageProperties = () => {
       status: 'under_construction',
       progress_percent: 0,
       assigned_user_id: '',
+      price_delta_percent: '',
     });
     setEditingProperty(null);
   };
@@ -156,6 +160,7 @@ const ManageProperties = () => {
       status: property.status as 'under_construction' | 'delivered',
       progress_percent: property.progress_percent || 0,
       assigned_user_id: property.assigned_user_id || '',
+      price_delta_percent: property.price_delta_percent?.toString() || '',
     });
     setIsDialogOpen(true);
   };
@@ -181,6 +186,7 @@ const ManageProperties = () => {
         progress_percent: formData.progress_percent,
         assigned_user_id: formData.assigned_user_id || null,
         created_by: user?.id || null,
+        price_delta_percent: formData.price_delta_percent ? parseFloat(formData.price_delta_percent) : null,
       };
 
       if (editingProperty) {
@@ -389,6 +395,17 @@ const ManageProperties = () => {
                 </Select>
               </div>
 
+              <div>
+                <Label>Price Delta (%)</Label>
+                <Input
+                  type="number"
+                  value={formData.price_delta_percent}
+                  onChange={(e) => setFormData({ ...formData, price_delta_percent: e.target.value })}
+                  placeholder="e.g. 5 or -3"
+                  className="input-luxury mt-1"
+                />
+              </div>
+
               <div className="md:col-span-2">
                 <Label>Construction Progress: {formData.progress_percent}%</Label>
                 <Slider
@@ -509,10 +526,11 @@ const ManageProperties = () => {
 
                 {/* Price */}
                 {property.price && (
-                  <div className="mt-3 pt-3 border-t border-border/30">
+                  <div className="mt-3 pt-3 border-t border-border/30 flex items-center gap-2">
                     <span className="text-xl font-display font-semibold text-gold-gradient">
                       EGP {property.price.toLocaleString()}
                     </span>
+                    <PriceDeltaIndicator percent={property.price_delta_percent} />
                   </div>
                 )}
               </div>

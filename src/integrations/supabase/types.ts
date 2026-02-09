@@ -534,6 +534,7 @@ export type Database = {
           image_url: string | null
           location: string | null
           price: number | null
+          price_delta_percent: number | null
           progress_percent: number | null
           progress_status: string | null
           status: string
@@ -552,6 +553,7 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           price?: number | null
+          price_delta_percent?: number | null
           progress_percent?: number | null
           progress_status?: string | null
           status?: string
@@ -570,6 +572,7 @@ export type Database = {
           image_url?: string | null
           location?: string | null
           price?: number | null
+          price_delta_percent?: number | null
           progress_percent?: number | null
           progress_status?: string | null
           status?: string
