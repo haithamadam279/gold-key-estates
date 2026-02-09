@@ -418,6 +418,13 @@ const ManageProperties = () => {
                 />
               </div>
 
+              {/* Live Photos - only shown when editing */}
+              {editingProperty && (
+                <div className="md:col-span-2 border-t border-border/20 pt-4">
+                  <PropertyPhotoUpload propertyId={editingProperty.id} />
+                </div>
+              )}
+
               <div className="md:col-span-2">
                 <Button
                   onClick={handleSaveProperty}
