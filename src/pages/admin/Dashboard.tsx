@@ -37,6 +37,21 @@ interface DashboardStats {
   pendingResales: number;
 }
 
+interface RecentProperty {
+  id: string;
+  title: string;
+  location: string | null;
+  image_url: string | null;
+  status: string;
+}
+
+interface RecentLead {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+}
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { user } = useApiAuth();
@@ -49,33 +64,40 @@ const AdminDashboard = () => {
     newLeads: 0,
     pendingResales: 0,
   });
-  const [recentProperties, setRecentProperties] = useState<PropertyListItem[]>([]);
-  const [recentLeads, setRecentLeads] = useState<Lead[]>([]);
+  const [recentProperties, setRecentProperties] = useState<RecentProperty[]>([]);
+  const [recentLeads, setRecentLeads] = useState<RecentLead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [users, properties, inventory, leads, resales] = await Promise.all([
-          mockUsersApi.list(),
-          mockPropertiesApi.list({ limit: 100 }),
-          mockInventoryApi.list(),
-          mockLeadsApi.list(),
-          mockResaleApi.list(),
+        const [
+          { count: userCount },
+          { data: properties },
+          { data: leads },
+          { count: resaleCount },
+        ] = await Promise.all([
+          supabase.from('profiles').select('*', { count: 'exact', head: true }),
+          supabase.from('properties').select('id, title, location, image_url, status').order('created_at', { ascending: false }).limit(100),
+          supabase.from('leads').select('id, name, email, status').order('created_at', { ascending: false }).limit(100),
+          supabase.from('resale_requests').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
         ]);
 
+        const propList = properties || [];
+        const leadList = leads || [];
+
         setStats({
-          totalUsers: users.length,
-          totalProperties: properties.total,
-          publishedProperties: properties.data.filter((p) => p.status === 'published').length,
-          pendingApproval: properties.data.filter((p) => p.status === 'pending_approval').length,
-          totalInventory: inventory.reduce((sum, i) => sum + i.totalUnits, 0),
-          newLeads: leads.filter((l) => l.status === 'new').length,
-          pendingResales: resales.filter((r) => r.status === 'pending').length,
+          totalUsers: userCount || 0,
+          totalProperties: propList.length,
+          publishedProperties: propList.filter((p) => p.status === 'published').length,
+          pendingApproval: propList.filter((p) => p.status === 'pending_approval').length,
+          totalInventory: 0,
+          newLeads: leadList.filter((l) => l.status === 'new').length,
+          pendingResales: resaleCount || 0,
         });
 
-        setRecentProperties(properties.data.slice(0, 5));
-        setRecentLeads(leads.slice(0, 5));
+        setRecentProperties(propList.slice(0, 5));
+        setRecentLeads(leadList.slice(0, 5));
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
       } finally {
