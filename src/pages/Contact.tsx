@@ -236,18 +236,47 @@ const Contact = () => {
                 </a>
               </motion.div>
 
-              {/* Map Placeholder */}
+              {/* Location Map */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className="glass-card p-2 aspect-video rounded-2xl overflow-hidden"
+                className="glass-card p-6 space-y-4"
               >
-                <a href="https://share.google/Fsk04K9YlO2ZuQpu9" target="_blank" rel="noopener noreferrer" className="w-full h-full bg-secondary/30 rounded-xl flex items-center justify-center hover:bg-secondary/50 transition-colors cursor-pointer">
-                  <div className="text-center">
-                    <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-                    <p className="text-muted-foreground">View on Google Maps</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-primary" />
                   </div>
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground">Our Location</h3>
+                    <p className="text-sm text-muted-foreground">Al Thawra Street 107, Cairo, Cairo, Egypt.</p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://share.google/Fsk04K9YlO2ZuQpu9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full aspect-video rounded-xl overflow-hidden bg-secondary/30 hover:bg-secondary/50 transition-colors group"
+                >
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <MapPin className="w-12 h-12 text-primary mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                      <p className="text-muted-foreground group-hover:text-foreground transition-colors">Click to view on Google Maps</p>
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="https://share.google/Fsk04K9YlO2ZuQpu9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full"
+                >
+                  <Button variant="outline" className="w-full gap-2 border-primary/30 hover:bg-primary/10 hover:text-primary">
+                    <MapPin className="w-4 h-4" />
+                    Open in Google Maps
+                  </Button>
                 </a>
               </motion.div>
             </motion.div>
