@@ -11,7 +11,10 @@ import {
   LogOut,
   ArrowLeftRight,
   Phone,
+  Sun,
+  Moon,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { NavigationItem, NavigationCTA } from '@/hooks/useNavigation';
 import { useLanguage } from '@/contexts/LanguageContext';
